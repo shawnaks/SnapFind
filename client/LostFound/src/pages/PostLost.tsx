@@ -109,7 +109,7 @@ export default function PostLost() {
         title,
         description,
         location: lastLocation,
-        date_lost: dateLost,
+        date: dateLost,
         image_url: imageUrl,
         user_id: uid,   // attach the resolved user uuid
         created_at: new Date().toISOString(),
