@@ -71,47 +71,55 @@ export default function Register() {
   }
 
   return (
-    <main className="auth-page">
+    <div className="auth-page">
       <div className="auth-card">
-        <h2>Register</h2>
+        <h2>Join Our Community</h2>
+
         <form onSubmit={submit} className="auth-form">
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            minLength={3}
-            maxLength={30}
-            required
-          />
 
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="auth-form-item">
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder="Type here..."
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              minLength={3}
+              maxLength={30}
+              required
+            />
+          </div>
 
-          <label>Phone number (optional)</label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="e.g. +1234567890"
-            pattern="^\+?[0-9\s\-()]{7,20}$"
-          />
-
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={5}
-            maxLength={50}
-            required
-          />
-
+          <div className="auth-form-item">
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="Type here..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="auth-form-item">
+            <label>Phone number (optional)</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="e.g. +1234567890"
+              pattern="^\+?[0-9\s\-()]{7,20}$"
+            /></div>
+          <div className="auth-form-item">
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={5}
+              maxLength={50}
+              required
+            />
+          </div>
           {error && <div className="error">{error}</div>}
 
           <button type="submit" disabled={loading}>
@@ -120,9 +128,9 @@ export default function Register() {
         </form>
 
         <div className="auth-switch">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/login">Log in here</Link>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

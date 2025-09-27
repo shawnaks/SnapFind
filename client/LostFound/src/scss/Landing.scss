@@ -12,7 +12,8 @@
   background-color: #7fcec5;
   background-image: url("src/assets/landing.webp");
   background-repeat: no-repeat;
-    background-size: cover;       /* make image cover entire container */
+  background-size: cover;
+  /* make image cover entire container */
   background-position: center;
   color: white;
 }
@@ -32,13 +33,27 @@
 }
 
 @keyframes btn-animation {
-  from {transform: none;box-shadow: 3px 3px 1px 2px rgba(0, 0, 0, 0.5);}
-  to { transform: translateX(3px) translateY(3px); box-shadow: none;}
+  from {
+    transform: none;
+    box-shadow: 3px 3px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  to {
+    transform: translateX(3px) translateY(3px);
+    box-shadow: none;
+  }
 }
 
 @keyframes btn-animation-1 {
-  to {transform: none; box-shadow: 3px 3px 1px 2px rgba(0, 0, 0, 0.5);}
-  from { transform: translateX(3px) translateY(3px); box-shadow: none;}
+  to {
+    transform: none;
+    box-shadow: 3px 3px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  from {
+    transform: translateX(3px) translateY(3px);
+    box-shadow: none;
+  }
 }
 
 .login-btn {
@@ -47,7 +62,7 @@
   border-radius: .5rem;
   box-sizing: border-box;
   color: #111827;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
   line-height: 1.25rem;
   padding: .75rem 1rem;
@@ -65,7 +80,7 @@
 }
 
 .login-btn:hover {
-  background-color: rgb(249,250,251);
+  background-color: rgb(249, 250, 251);
   animation-name: btn-animation;
   animation-duration: 0.5s;
   transform: translateX(3px) translateY(3px);
@@ -118,12 +133,14 @@
     color: black;
     appearance: none;
     transition: border 0.15s ease 0s;
+
     :focus {
       outline: none;
       box-shadow: none;
       border-color: rgb(100, 153, 255);
     }
   }
+
   button {
     margin-top: 15px;
     background-color: #FFFFFF;
