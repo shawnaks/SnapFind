@@ -17,6 +17,9 @@ type Item = {
 
 export default function Profile() {
   const [userId, setUserId] = useState<string | null>(null)
+  const [userEmail, setUserEmail] = useState<string>('')
+  const [userName, setUserName] = useState<string>('')
+  const [avatarUrl, setAvatarUrl] = useState<string>('')
   const [activeTab, setActiveTab] = useState<'lost' | 'found'>('lost') // default to lost
   const [lostItems, setLostItems] = useState<Item[]>([])
   const [foundItems, setFoundItems] = useState<Item[]>([])
@@ -27,11 +30,24 @@ export default function Profile() {
     async function resolveUser() {
       try {
         const { data } = await supabase.auth.getUser()
-        const id = data?.user?.id ?? window.localStorage.getItem('userId')
+        const u = data?.user
+        const id = u?.id ?? window.localStorage.getItem('userId')
         setUserId(id ?? null)
+        const email = u?.email ?? window.localStorage.getItem('email') ?? ''
+        setUserEmail(email)
+        // Prefer Supabase user_metadata for name/avatar if present
+        const meta = (u?.user_metadata as any) || {}
+        const nameCandidate: string = meta.full_name || meta.name || (email ? email.split('@')[0] : 'User')
+        setUserName(nameCandidate)
+        const avatarCandidate: string = meta.avatar_url || `https://i.pravatar.cc/160?u=${encodeURIComponent(email || id || 'guest')}`
+        setAvatarUrl(avatarCandidate)
       } catch {
         const id = window.localStorage.getItem('userId')
         setUserId(id ?? null)
+        const email = window.localStorage.getItem('email') ?? ''
+        setUserEmail(email)
+        setUserName(email ? email.split('@')[0] : 'User')
+        setAvatarUrl(`https://i.pravatar.cc/160?u=${encodeURIComponent(email || id || 'guest')}`)
       }
     }
     resolveUser()
@@ -74,6 +90,8 @@ export default function Profile() {
 
   function renderItem(item: Item) {
     const date = item.date_lost ?? item.date_found ?? item.created_at
+    const where = item.location ? `${activeTab === 'lost' ? 'lost' : 'found'} at ${item.location}` : ''
+    const combined = [item.description, where].filter(Boolean).join(' ')
     return (
       <article className="item-card" key={item.id}>
         <div className="item-media">
@@ -86,22 +104,20 @@ export default function Profile() {
         </div>
 
         <div className="item-content">
-          <div className="item-row">
-            <h3 className="item-title">{item.title || 'Untitled'}</h3>
-            <time className="item-date">{date ? new Date(date).toLocaleDateString() : ''}</time>
-          </div>
-
-          <div className="item-meta">
-            {item.category && <span className="tag">{item.category}</span>}
-            {item.location && <span className="location">{item.location}</span>}
-          </div>
-
-          {item.description && <p className="item-desc">{item.description}</p>}
-
+          <h3 className="item-title">{item.title || 'Untitled'}</h3>
+          <p className="item-desc">
+            {combined}
+          </p>
+          {item.category && (
+            <div className="item-meta">
+              <span className="tag">{item.category}</span>
+            </div>
+          )}
           <div className="item-actions">
-            <button type="button" className="btn btn-outline">View</button>
-            <button type="button" className="btn btn-primary">Edit</button>
+            <button type="button" className="btn btn-view">View</button>
+            <button type="button" className="btn btn-delete">Delete</button>
           </div>
+          <time className="item-date">{date ? new Date(date).toLocaleDateString() : ''}</time>
         </div>
       </article>
     )
@@ -123,39 +139,56 @@ export default function Profile() {
   return (
     <main className="profile-page">
       <div className="profile-card">
-        <h2>My Items</h2>
+        <div className="profile-two-col">
+          <aside className="profile-two-col__left">
+            <section className="profile-user">
+              <img className="profile-user__avatar" src={avatarUrl || 'https://i.pravatar.cc/160'} alt="User avatar" />
+              <div className="profile-user__info">
+                <div className="profile-user__name">{userName || 'User'}</div>
+                {userEmail && <div className="profile-user__email">{userEmail}</div>}
+              </div>
+              <div className="profile-user__actions">
+                <button type="button" className="btn btn-outline">Edit profile</button>
+              </div>
+            </section>
+          </aside>
 
-        <div className="profile_tabs">
-          <button
-            className={activeTab === 'lost' ? 'active' : ''}
-            onClick={() => setActiveTab('lost')}
-            type="button"
-          >
-            My Lost Items
-          </button>
-          <button
-            className={activeTab === 'found' ? 'active' : ''}
-            onClick={() => setActiveTab('found')}
-            type="button"
-          >
-            My Found Items
-          </button>
-          <button className="refresh" onClick={fetchItems} type="button" aria-label="Refresh">
-            Refresh
-          </button>
-        </div>
+          <section className="profile-two-col__right">
+            <h2 className="profile-title">My Items</h2>
 
-        {loading && <div className="loading">Loading...</div>}
-        {error && <div className="error">{error}</div>}
+            <div className="profile_tabs">
+              <button
+                className={activeTab === 'lost' ? 'active' : ''}
+                onClick={() => setActiveTab('lost')}
+                type="button"
+              >
+                My Lost Items
+              </button>
+              <button
+                className={activeTab === 'found' ? 'active' : ''}
+                onClick={() => setActiveTab('found')}
+                type="button"
+              >
+                My Found Items
+              </button>
+              <button className="refresh" onClick={fetchItems} type="button" aria-label="Refresh">
+                Refresh
+              </button>
+            </div>
 
-        {!loading && itemsToShow.length === 0 && (
-          <div className="empty">
-            {activeTab === 'lost' ? 'You have not reported any lost items.' : 'You have not posted any found items.'}
-          </div>
-        )}
+            {loading && <div className="loading">Loading...</div>}
+            {error && <div className="error">{error}</div>}
 
-        <div className="profile-items-list">
-          {itemsToShow.map(renderItem)}
+            {!loading && itemsToShow.length === 0 && (
+              <div className="empty">
+                {activeTab === 'lost' ? 'You have not reported any lost items.' : 'You have not posted any found items.'}
+              </div>
+            )}
+
+            <div className="profile-items-list" role="list">
+              {itemsToShow.map(renderItem)}
+            </div>
+          </section>
         </div>
       </div>
     </main>
