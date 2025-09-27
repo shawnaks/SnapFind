@@ -25,6 +25,7 @@ export default function Profile() {
   const [foundItems, setFoundItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   useEffect(() => {
     async function resolveUser() {
@@ -87,6 +88,32 @@ export default function Profile() {
       setLoading(false)
     }
   }
+  async function deleteItem(id: string, type: 'lost' | 'found') {
+    const confirmed = window.confirm('Delete this item? This action cannot be undone.')
+    if (!confirmed) return
+
+    // optimistic UI: mark deleting
+    setDeletingId(id)
+    setError(null)
+
+    try {
+      const table = type === 'lost' ? 'lost-items' : 'found-items'
+      const { error: deleteError } = await supabase.from(table).delete().eq('id', id).limit(1)
+      if (deleteError) throw deleteError
+
+      // remove from local state without refetching
+      if (type === 'lost') {
+        setLostItems((prev) => prev.filter((it) => it.id !== id))
+      } else {
+        setFoundItems((prev) => prev.filter((it) => it.id !== id))
+      }
+    } catch (err: any) {
+      console.error('Delete failed', err)
+      setError(err?.message || 'Failed to delete item')
+    } finally {
+      setDeletingId(null)
+    }
+  }
 
   function renderItem(item: Item) {
     const date = item.date_lost ?? item.date_found ?? item.created_at
@@ -118,7 +145,10 @@ export default function Profile() {
           )}
           <div className="item-actions">
             <button type="button" className="btn btn-edit">Edit</button>
-            <button type="button" className="btn btn-delete">Delete</button>
+            <button type="button" className="btn btn-delete" onClick={() => deleteItem(item.id, activeTab)}
+              disabled={deletingId === item.id || loading}
+            >
+              {deletingId === item.id ? 'Deleting...' : 'Delete'}</button>
           </div>
         </div>
       </article>
