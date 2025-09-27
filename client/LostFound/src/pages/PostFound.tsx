@@ -8,7 +8,6 @@ const STORAGE_BUCKET = 'found-items' // ensure this bucket exists in your Supaba
 export default function PostFound() {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [category, setCategory] = useState('')
     const [location, setLocation] = useState('')
     const [dateFound, setDateFound] = useState<string>(() => new Date().toISOString().slice(0, 10))
     const [file, setFile] = useState<File | null>(null)
