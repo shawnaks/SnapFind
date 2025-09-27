@@ -36,16 +36,15 @@ export default function Login() {
         return
       }
 
-      // If a user object is returned, login succeeded
       const user = (data as any)?.user
       if (user) {
+        // save user uuid locally for client-side actions
+        window.localStorage.setItem('userId', user.id)
         window.localStorage.setItem('email', email)
-        // optional: store more user info if needed
         navigate('/home')
         return
       }
 
-      // If no user and no error, likely email confirmation required
       setError('Check your email for a confirmation link (if required).')
     } catch (err: any) {
       setError(err?.message || 'Login failed')
@@ -84,7 +83,7 @@ export default function Login() {
         </form>
 
         <div className="auth-switch">
-          Don&apos;t have an account? <Link to="/register">Register</Link>
+          Don't have an account? <Link to="/register">Register</Link>
         </div>
       </div>
     </main>
