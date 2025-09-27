@@ -8,9 +8,12 @@
   //padding-top: 40px;
   position: absolute;
   top: 0;
-  z-index: -999;
+  // z-index: -999;
   background-color: #7fcec5;
   background-image: url("src/assets/landing.webp");
+  background-repeat: no-repeat;
+    background-size: cover;       /* make image cover entire container */
+  background-position: center;
   color: white;
 }
 
