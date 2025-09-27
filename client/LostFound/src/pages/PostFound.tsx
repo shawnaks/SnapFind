@@ -122,11 +122,18 @@ export default function PostFound() {
           <label>Category</label>
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value="">Select a category</option>
-            <option value="electronics">Electronics</option>
-            <option value="wallets">Wallets</option>
             <option value="keys">Keys</option>
-            <option value="accessories">Accessories</option>
-            <option value="documents">Documents</option>
+            <option value="studentid">Student IDs</option>
+            <option value="wallet">Wallet</option>
+            <option value="phone">Phone</option>
+            <option value="charger">Charger</option>
+            <option value="headphones">Headphones</option>
+            <option value="earbuds">Earbuds</option>
+            <option value="notebook">Notebook</option>
+            <option value="bag">Bag</option>
+            <option value="umbrella">Umbrella</option>
+            <option value="shoes">Shoes</option>
+            <option value="calculator">Calculator</option>
             <option value="other">Other</option>
           </select>
 
