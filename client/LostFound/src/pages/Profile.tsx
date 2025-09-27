@@ -110,7 +110,7 @@ export default function Profile() {
           </p>
           {item.category && (
             <div className="item-meta">
-              <span className="tag">{item.category}</span>
+              <span className="tag">Category: {item.category}</span>
             </div>
           )}
           <div className="item-actions">
