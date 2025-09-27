@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import AppLayout from './layouts/AppLayout'
 import PostFound from './pages/PostFound'
 import PostLost from './pages/PostLost'
+import Profile from './pages/Profile'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/post-found" element={<PostFound />} />
         <Route path="/post-lost" element={<PostLost />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   )
