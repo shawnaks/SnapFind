@@ -157,7 +157,15 @@ h1 {
     cursor: pointer;
 }
 
-span {
+.file-name {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: Raleway, sans-serif;
+    color: black;
+    padding-left: 10px;
+}
+
+.upload-text {
     font-size: 20px;
     font-weight: 700;
     font-family: Raleway, sans-serif;
