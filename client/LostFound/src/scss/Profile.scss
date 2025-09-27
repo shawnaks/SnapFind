@@ -59,10 +59,7 @@
   color: var(--color_primary_default, #2563eb);
   text-align: center;
   line-height: 1.5;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-radius: 6px; /* match edit profile button */
   padding: 8px 16px;
   opacity: 1;
   cursor: pointer;
@@ -79,8 +76,19 @@
   -khtml-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  background: none;
-  border: none;
+  background: none transparent;
+  border: 1px solid var(--color_primary_default, #2563eb); /* match edit profile button */
+}
+
+.profile_tabs button:hover {
+  background-color: rgba(37, 99, 235, 0.08); /* subtle primary tint */
+}
+
+/* active tab: solid primary background with white text */
+.profile_tabs button.active {
+  background-color: var(--color_primary_default, #2563eb);
+  color: var(--color_primary_contrast_default, #ffffff);
+  border-color: var(--color_primary_default, #2563eb);
 }
 
 /* user profile header inside the card */
@@ -149,8 +157,8 @@
 }
 .profile-items-list .item-content { padding: 12px; display: grid; gap: 8px; }
 .profile-items-list .item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.profile-items-list .item-title { margin: 8px 0 4px 0; font-size: 1rem; font-weight: 700; color: #111827; }
-.profile-items-list .item-date { color: #718096; font-size: .85rem; }
+.profile-items-list .item-title { margin: 0; font-size: 1rem; font-weight: 700; color: #111827; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-items-list .item-date { color: #718096; font-size: .85rem; white-space: nowrap; }
 .profile-items-list .item-meta {
   display: flex;
   gap: 0; /* prevent extra space from combining with tag padding */
@@ -170,12 +178,19 @@
   align-items: center;
   justify-content: space-between;
 }
-.profile-items-list .btn { padding: .5rem .9rem; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid transparent; background: none transparent; }
-.profile-items-list .btn.btn-view { background: none transparent; color: var(--color_primary_default, #2563eb); }
+.profile-items-list .btn { padding: .5rem .9rem; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid transparent; background: none transparent; transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+.profile-items-list .btn.btn-edit { background: none transparent; color: var(--color_primary_default, #2563eb); border-color: var(--color_primary_default, #2563eb); }
 .profile-items-list .btn.btn-delete {
   background-color: var(--color_destructive_default, #dc2626);
   color: #fff;
   border-color: transparent;
+}
+
+.profile-items-list .btn.btn-edit:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+}
+.profile-items-list .btn.btn-delete:hover {
+  filter: brightness(0.92);
 }
 
 @media (max-width: 860px) {
