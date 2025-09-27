@@ -1,35 +1,81 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
-import '../scss/PostFound.scss' // reuse the same styles as PostFound
+import '../scss/PostFound.scss'
 
 const STORAGE_BUCKET = 'lost-items' // ensure this bucket exists in Supabase
 
 export default function PostLost() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('')
   const [lastLocation, setLastLocation] = useState('')
   const [dateLost, setDateLost] = useState<string>(() => new Date().toISOString().slice(0, 10))
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [userId, setUserId] = useState<string | null>(null)
   const navigate = useNavigate()
 
+  // resolve current user id on mount (and keep localStorage in sync)
+  useEffect(() => {
+    async function resolveUserId() {
+      try {
+        // supabase-js v2: getUser()
+        const getUserResult = await supabase.auth.getUser()
+        const uidFromGetUser = (getUserResult as any)?.data?.user?.id
+        if (uidFromGetUser) {
+          setUserId(uidFromGetUser)
+          window.localStorage.setItem('userId', uidFromGetUser)
+          return
+        }
+
+        // fallback to session (some versions / flows)
+        const getSession = await supabase.auth.getSession()
+        const uidFromSession = (getSession as any)?.data?.session?.user?.id
+        if (uidFromSession) {
+          setUserId(uidFromSession)
+          window.localStorage.setItem('userId', uidFromSession)
+          return
+        }
+
+        // last resort: existing value in localStorage
+        const stored = window.localStorage.getItem('userId')
+        if (stored) setUserId(stored)
+      } catch (err) {
+        // ignore — user remains null
+        const stored = window.localStorage.getItem('userId')
+        if (stored) setUserId(stored)
+      }
+    }
+
+    resolveUserId()
+  }, [])
+
   async function uploadImage(file: File) {
-    const ext = file.name.split('.').pop()
+    const ext = file.name.split('.').pop() ?? 'jpg'
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
     const path = `uploads/${fileName}`
 
-    const { error: uploadError } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file, {
-      cacheControl: '3600',
-      upsert: false,
-    })
-    if (uploadError) throw uploadError
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(path, file, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: file.type,
+      })
+
+    if (uploadError) {
+      throw uploadError
+    }
 
     const { data: publicData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path)
+    if (!publicData?.publicUrl) {
+      const { data: signedData, error: signedError } = await supabase.storage.from(STORAGE_BUCKET).createSignedUrl(path, 60 * 60)
+      if (signedError) throw signedError
+      return signedData.signedUrl
+    }
 
-    return publicData?.publicUrl ?? null
+    return publicData.publicUrl
   }
 
   async function submit(e: React.FormEvent) {
@@ -37,6 +83,15 @@ export default function PostLost() {
     setError('')
 
     if (!title.trim()) return setError('Item title is required')
+
+    // ensure we have a resolved user id
+    const uid = userId ?? window.localStorage.getItem('userId')
+    if (!uid) {
+      setError('Please log in to report a lost item.')
+      navigate('/login')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -53,17 +108,15 @@ export default function PostLost() {
       const insertPayload: any = {
         title,
         description,
-        category,
         location: lastLocation,
         date_lost: dateLost,
         image_url: imageUrl,
+        user_id: uid,   // attach the resolved user uuid
         created_at: new Date().toISOString(),
       }
 
       const { error: insertError } = await supabase.from('lost-items').insert(insertPayload)
-      if (insertError) {
-        throw insertError
-      }
+      if (insertError) throw insertError
 
       navigate('/home')
     } catch (err: any) {
@@ -76,12 +129,11 @@ export default function PostLost() {
   return (
     <main className="postfound-page">
       <div className="postfound-card">
-        <div className='postfound-header'>
-          <h1>Report a Lost Item</h1>
-          <p className="subtitle">Help us help you find your lost item by providing detailed information</p>
-        </div>
+        <h1>Report a Lost Item</h1>
+        <p className="subtitle">Help us help you find your lost item by providing detailed information</p>
+
         <form onSubmit={submit} className="postfound-form">
-          <div className="postfound-form-item">
+          <div className='postfound-form-item'>
             <label>Item Title</label>
             <input
               type="text"
@@ -89,36 +141,20 @@ export default function PostLost() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-            /></div>
-          <div className="postfound-form-item">
+            />
+          </div>
+          <div className='postfound-form-item'>
+
             <label>Description</label>
             <textarea
               placeholder="Provide detailed description including color, brand, size, distinctive features..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={6}
+              style={{ resize: 'none' }}
             />
           </div>
-          <div className="postfound-form-item">
-            <label>Category</label>
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="">Select a category</option>
-            <option value="keys">Keys</option>
-            <option value="studentid">Student IDs</option>
-            <option value="wallet">Wallet</option>
-            <option value="phone">Phone</option>
-            <option value="charger">Charger</option>
-            <option value="headphones">Headphones</option>
-            <option value="earbuds">Earbuds</option>
-            <option value="notebook">Notebook</option>
-            <option value="bag">Bag</option>
-            <option value="umbrella">Umbrella</option>
-            <option value="shoes">Shoes</option>
-            <option value="calculator">Calculator</option>
-            <option value="other">Other</option>
-            </select>
-          </div>
-          <div className="postfound-form-item">
+          <div className='postfound-form-item'>
             <label>Last Known Location</label>
             <input
               type="text"
@@ -127,11 +163,11 @@ export default function PostLost() {
               onChange={(e) => setLastLocation(e.target.value)}
             />
           </div>
-          <div className="postfound-form-item">
+          <div className='postfound-form-item'>
             <label>Date Lost</label>
             <input type="date" value={dateLost} onChange={(e) => setDateLost(e.target.value)} />
           </div>
-          <div className="postfound-form-item">
+          <div className='postfound-form-item'>
             <label>Item Photo</label>
             <div
               className="image-upload"
@@ -151,16 +187,15 @@ export default function PostLost() {
                 style={{ display: 'none' }}
               />
             </div>
-            <div className="image-hint">Including a photo can greatly increase the chances of reuniting the item with its owner.</div>
+            <div className='image-hint'>Uploading a photo can significantly increase the chances of finding your item.</div>
           </div>
-
           {error && <div className="error">{error}</div>}
 
           <button type="submit" className="post-btn" disabled={loading}>
             {loading ? 'Posting...' : 'Post Lost Item'}
           </button>
         </form>
-      </div >
-    </main >
+      </div>
+    </main>
   )
 }
