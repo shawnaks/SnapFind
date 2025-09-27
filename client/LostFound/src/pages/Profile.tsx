@@ -104,7 +104,10 @@ export default function Profile() {
         </div>
 
         <div className="item-content">
-          <h3 className="item-title">{item.title || 'Untitled'}</h3>
+          <div className="item-row">
+            <h3 className="item-title">{item.title || 'Untitled'}</h3>
+            <time className="item-date">{date ? new Date(date).toLocaleDateString() : ''}</time>
+          </div>
           <p className="item-desc">
             {combined}
           </p>
@@ -114,10 +117,9 @@ export default function Profile() {
             </div>
           )}
           <div className="item-actions">
-            <button type="button" className="btn btn-view">View</button>
+            <button type="button" className="btn btn-edit">Edit</button>
             <button type="button" className="btn btn-delete">Delete</button>
           </div>
-          <time className="item-date">{date ? new Date(date).toLocaleDateString() : ''}</time>
         </div>
       </article>
     )
@@ -170,9 +172,6 @@ export default function Profile() {
                 type="button"
               >
                 My Found Items
-              </button>
-              <button className="refresh" onClick={fetchItems} type="button" aria-label="Refresh">
-                Refresh
               </button>
             </div>
 
