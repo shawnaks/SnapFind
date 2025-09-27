@@ -6,7 +6,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, .08);
   position: sticky;
   top: 0;
-  background-color: var(--color_background_default, #f9f8f5);
+  background-color: var(--color_primary_default, #2563eb);
   z-index: 100;
 }
 
@@ -24,7 +24,7 @@
 .navbar__logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: var(--color_primary_default, #2563eb);
+  color: var(--color_background_default, #f9f8f5);
   text-decoration: none;
 }
 
@@ -35,15 +35,15 @@
 
 .navbar__nav-link {
 padding: 8px;
-  color: var(--color_primary_default, #2563eb);
+  color: var(--color_primary_default, #f9f8f5);
   text-decoration: none;
   font-weight: 400;
   text-align: center;
 }
 
 .navbar__nav-logout {
-  background-color: var(--color_primary_default, #2563eb);
-  color: var(--color_primary_contrast_default, #ffffff);
+  background-color: var(--color_primary_default, #ffffff);
+  color: var(--color_primary_contrast_default, #2563eb);
   border: 0;
   border-radius: 6px;
   cursor: pointer;

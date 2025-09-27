@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import '../scss/Home.scss'
 import supabase from '../lib/supabaseClient'
 
 type Item = {
-    id: string
-    title: string
-    description: string
-    location: string
-    date: string
-    type: 'found' | 'lost'
-    category: string
-    imageUrl: string
-    userName: string
-    userEmail: string
+  id: string
+  title: string
+  description: string
+  location: string
+  date: string
+  type: 'found' | 'lost'
+  category: string
+  imageUrl: string
+  userName: string
+  userEmail: string
 }
 
 
@@ -122,78 +122,71 @@ export default function Home() {
   }, [items, query, location, kind, category])
 
 
-    return (
-        <div className="home">
-            <section className="home__hero">
-                <h1 className="home__title">Lost & Found Hub</h1>
-                <p className="home__subtitle">Helping reunite lost items with their owners through the power of community. Search through found items or browse lost items to help others.</p>
-            </section>
+  return (
+    <div className="home">
+      <section className="home__hero">
+        <h1 className="home__title">Lost & Found Hub</h1>
+        <p className="home__subtitle">Helping reunite lost items with their owners through the power of community. Search through found items or browse lost items to help others.</p>
+      </section>
 
-            <main className="home__content">
-                <aside className="home__filters">
-                    <form className="home__filters-keywords" onSubmit={(e) => e.preventDefault()}>
-                        <div className="home__filters-title">Search by keywords</div>
-                        <input
-                            className="home__input"
-                            placeholder="Search by name or description"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                        />
-                    </form>
-                    <label>Location</label>
-                    <input
-                        className="home__input"
-                        placeholder="e.g. Library, Gym"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                    />
-                    <label>Type</label>
-                    <select className="home__select" value={kind} onChange={(e) => setKind(e.target.value as any)}>
-                        <option value="all">All</option>
-                        <option value="found">Found</option>
-                        <option value="lost">Lost</option>
-                    </select>
-                    <label>Category</label>
-                    <select className="home__select" value={category} onChange={(e) => setCategory(e.target.value as any)}>
-                        {categories.map(c => (
-                            <option key={c} value={c}>{c[0].toUpperCase() + c.slice(1)}</option>
-                        ))}
-                    </select>
-                    <button type="button" className="home__search-btn">Search</button>
-                </aside>
-                <section className="home__results">
-                    {visible.length === 0 && <div className="home__empty">No items match your search.</div>}
-                    <div className="home__grid">
-                        {visible.map((i) => (
-                            <article key={i.id} className="item-card">
-                                <div className="item-card__media">
-                                    <img src={i.imageUrl} alt={i.title} loading="lazy" />
-                                </div>
-                                <div className="item-card__body">
-                                    <div className="item-card__row">
-                                        <h4 className="item-card__title">{i.title}</h4>
-                                        <span className={`badge ${i.type === 'found' ? 'badge--found' : 'badge--lost'}`}>{i.type}</span>
-                                    </div>
-                                    <p className="item-card__desc">{i.description}</p>
-                                    <div className="item-card__chips">
-                                        <span className="pill pill--category">{i.category}</span>
-                                    </div>
-                                    <div className="item-card__user">Posted by {i.userName}</div>
-                                </div>
-                                <div className="item-card__meta">
-                                    <span>{i.location}</span>
-                                    <span>{i.type === 'found' ? 'Found' : 'Lost'}: {new Date(i.date).toLocaleDateString()}</span>
-                                </div>
-                                <div className="item-card__footer">
-                                    <button className="btn btn--contact" onClick={() => window.location.href = `mailto:${i.userEmail}?subject=${encodeURIComponent('Regarding: ' + i.title)}`}>
-                                        Contact
-                                    </button>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-            </main>
-        </div>
-    )
+      <main className="home__content">
+        <aside className="home__filters">
+          <form className="home__filters-keywords" onSubmit={(e) => e.preventDefault()}>
+            <div className="home__filters-title">Search by keywords</div>
+            <input
+              className="home__input"
+              placeholder="Search by name or description"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </form>
+          <label>Type</label>
+          <select className="home__select" value={kind} onChange={(e) => setKind(e.target.value as any)}>
+            <option value="all">All</option>
+            <option value="found">Found</option>
+            <option value="lost">Lost</option>
+          </select>
+          <label>Category</label>
+          <select className="home__select" value={category} onChange={(e) => setCategory(e.target.value as any)}>
+            {categories.map(c => (
+              <option key={c} value={c}>{c[0].toUpperCase() + c.slice(1)}</option>
+            ))}
+          </select>
+          <button type="button" className="home__search-btn">Search</button>
+        </aside>
+        <section className="home__results">
+          {visible.length === 0 && <div className="home__empty">No items match your search.</div>}
+          <div className="home__grid">
+            {visible.map((i) => (
+              <article key={i.id} className="item-card">
+                <div className="item-card__media">
+                  <img src={i.imageUrl} alt={i.title} loading="lazy" />
+                </div>
+                <div className="item-card__body">
+                  <div className="item-card__row">
+                    <h4 className="item-card__title">{i.title}</h4>
+                    <span className={`badge ${i.type === 'found' ? 'badge--found' : 'badge--lost'}`}>{i.type}</span>
+                  </div>
+                  <p className="item-card__desc">{i.description}</p>
+                  <div className="item-card__chips">
+                    <span className="pill pill--category">{i.category}</span>
+                  </div>
+                  <div className="item-card__user">Posted by {i.userName}</div>
+                </div>
+                <div className="item-card__meta">
+                  <span>{i.location}</span>
+                  <span>{i.type === 'found' ? 'Found' : 'Lost'}: {new Date(i.date).toLocaleDateString()}</span>
+                </div>
+                <div className="item-card__footer">
+                  <button className="btn btn--contact" onClick={() => window.location.href = `mailto:${i.userEmail}?subject=${encodeURIComponent('Regarding: ' + i.title)}`}>
+                    Contact
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  )
 }
