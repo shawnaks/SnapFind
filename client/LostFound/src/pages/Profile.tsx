@@ -128,17 +128,14 @@ export default function Profile() {
           {item.description && <p className="item-desc">{item.description}</p>}
 
           <div className="item-actions">
-<<<<<<< Updated upstream
             <button type="button" className="btn btn-outline">View</button>
             <button type="button" className="btn btn-primary">Edit</button>
-=======
             <button type="button" className="btn btn-edit">Edit</button>
             <button type="button" className="btn btn-delete" onClick={() => deleteItem(item.id, activeTab)}
               disabled={deletingId === item.id || loading}
             >
               {deletingId === item.id ? 'Deleting...' : 'Delete'}
             </button>
->>>>>>> Stashed changes
           </div>
         </div>
       </article>
