@@ -45,20 +45,6 @@ export default function Home() {
 
   return (
     <div className="home">
-      <header className="home__header">
-        <div className="home__logo-wrap">
-          <img className="home__logo-img" src="/vite.svg" alt="Logo" />
-          <div className="home__logo-text">Lost&Found</div>
-        </div>
-        <nav className="home__nav home__nav--right">
-          <a className="home__nav-link" href="#">Post lost</a>
-          <a className="home__nav-link" href="#">Found item</a>
-          <a className="home__nav-link" href="#">Message</a>
-          <a className="home__nav-link" href="#">Profile</a>
-          <button className="home__nav-logout">Log out</button>
-        </nav>
-      </header>
-
       <section className="home__hero">
         <h1 className="home__title">Lost & Found Hub</h1>
         <p className="home__subtitle">Helping reunite lost items with their owners through the power of community. Search through found items or browse lost items to help others.</p>
