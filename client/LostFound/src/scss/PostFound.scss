@@ -27,9 +27,10 @@ body,
     // background: transparent;
     margin: 0;
     padding: 0;
-    background-image: url('src/assets/landing.webp');
-    background-repeat: no-repeat;
-    background-size: cover;
+    // background-image: url('src/assets/landing.webp');
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    background-color: #e5e7eb;
 }
 
 .postfound-card {
@@ -50,6 +51,11 @@ body,
     /* IE/Edge */
     scrollbar-width: none;
     border-radius: 10px;
+    box-shadow:
+      0 10px 30px rgba(0,0,0,0.12),   /* bottom */
+      0 -6px 20px rgba(0,0,0,0.06),   /* top */
+      10px 0 20px rgba(0,0,0,0.06),   /* right */
+      -10px 0 20px rgba(0,0,0,0.06);  /* left */
     // align-items: center;
 }
 
