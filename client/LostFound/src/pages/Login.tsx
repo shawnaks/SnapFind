@@ -1,13 +1,11 @@
-import { useState } from 'react'
-import { api } from '../lib/api'
-import '../scss/Auth.scss'
-import sha256 from 'crypto-js/sha256'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient'
+import '../scss/Auth.scss'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [hash, setHash] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -15,17 +13,42 @@ export default function Login() {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+
+    if (!email.trim()) {
+      setError('Email is required')
+      return
+    }
+    if (password.length < 5) {
+      setError('Password must be at least 5 characters')
+      return
+    }
+
     setLoading(true)
     try {
-      const res = await api.post('/user/login', { email, password: hash })
-      if (res.status === 200) {
-        window.localStorage.setItem('email', email)
-        navigate('/home')
-      } else {
-        setError(res.data?.message || 'Login failed')
+      // supabase v2: signInWithPassword
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (signInError) {
+        setError(signInError.message)
+        return
       }
+
+      // If a user object is returned, login succeeded
+      const user = (data as any)?.user
+      if (user) {
+        window.localStorage.setItem('email', email)
+        // optional: store more user info if needed
+        navigate('/home')
+        return
+      }
+
+      // If no user and no error, likely email confirmation required
+      setError('Check your email for a confirmation link (if required).')
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Login failed')
+      setError(err?.message || 'Login failed')
     } finally {
       setLoading(false)
     }
@@ -43,22 +66,23 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <label>Password</label>
           <input
             type="password"
             value={password}
-            onChange={(e) => {
-              const v = e.target.value
-              setPassword(v)
-              setHash(sha256(sha256(v).toString()).toString())
-            }}
+            onChange={(e) => setPassword(e.target.value)}
             minLength={5}
-            maxLength={50}
             required
           />
+
           {error && <div className="error">{error}</div>}
-          <button type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign in'}
+          </button>
         </form>
+
         <div className="auth-switch">
           Don&apos;t have an account? <Link to="/register">Register</Link>
         </div>
