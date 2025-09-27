@@ -54,14 +54,13 @@ export default function PostLost() {
         title,
         description,
         category,
-        last_location: lastLocation,
+        location: lastLocation,
         date_lost: dateLost,
         image_url: imageUrl,
-        type: 'lost',
         created_at: new Date().toISOString(),
       }
 
-      const { error: insertError } = await supabase.from('items').insert(insertPayload)
+      const { error: insertError } = await supabase.from('lost-items').insert(insertPayload)
       if (insertError) {
         throw insertError
       }
