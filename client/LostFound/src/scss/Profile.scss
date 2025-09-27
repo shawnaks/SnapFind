@@ -1,3 +1,23 @@
+/* basic page/card layout (keeps visual style consistent with PostFound) */
+.profile-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 36px 16px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 900px;
+  padding: 18px;
+  background: #fff;
+}
+
+/* profile */
 .profile {
   padding-bottom: 300px;
   background-color: #ffffff;

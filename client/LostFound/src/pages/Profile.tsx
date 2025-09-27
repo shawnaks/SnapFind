@@ -1,70 +1,164 @@
+import React, { useEffect, useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import '../scss/Profile.scss'
 
-type MyItem = {
-	id: string
-	title: string
-	imageUrl: string
-	location: string
-	type: 'found' | 'lost'
-	category: string
+type Item = {
+  id: string
+  title?: string
+  description?: string
+  category?: string
+  location?: string
+  date_found?: string
+  date_lost?: string
+  image_url?: string
+  created_at?: string
+  user_id?: string
 }
 
-const MOCK_MY_ITEMS: MyItem[] = [
-	{ id: 'i1', title: 'Blue Backpack', imageUrl: 'https://picsum.photos/seed/pf1/600/400', location: 'Main Library', type: 'found', category: 'Bags' },
-	{ id: 'i2', title: 'iPhone 13', imageUrl: 'https://picsum.photos/seed/pf2/600/400', location: 'Cafeteria', type: 'lost', category: 'Electronics' },
-	{ id: 'i3', title: 'Keychain', imageUrl: 'https://picsum.photos/seed/pf3/600/400', location: 'Gym', type: 'found', category: 'Keys' },
-]
-
 export default function Profile() {
-	return (
-		<div className="profile">
-			<section className="profile__body">
-				<div className="profile__main">
-					<div className="profile__group">
-						{/* Left profile card */}
-						<aside className="profile__left">
-							<div className="profile__edit-wrap">
-								<button className="profile__edit-btn" type="button">Edit profile</button>
-							</div>
-							<div className="profile__user">
-								<img className="profile__avatar" src="https://i.pravatar.cc/160?img=12" alt="User Avatar" />
-								<div className="profile__username">John Doe</div>
-							</div>
-						</aside>
+  const [userId, setUserId] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<'lost' | 'found'>('lost') // default to lost
+  const [lostItems, setLostItems] = useState<Item[]>([])
+  const [foundItems, setFoundItems] = useState<Item[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-						{/* Right content card */}
-						<section className="profile__right">
-							<div className="profile__tabs">
-								<button className="profile__tab" type="button">My lost items</button>
-								<button className="profile__tab" type="button">My found items</button>
-								<button className="profile__tab" type="button">Pending confirmation</button>
-							</div>
-							<div className="profile__items">
-								{MOCK_MY_ITEMS.map((it) => (
-									<article key={it.id} className="profile__card">
-										<div className="profile__card-media">
-											<img src={it.imageUrl} alt={it.title} loading="lazy" />
-										</div>
-										<div className="profile__card-body">
-											<div className="profile__card-title">{it.title}</div>
-											<div className="profile__card-meta">
-												<span className={`profile__badge ${it.type === 'found' ? 'profile__badge--found' : 'profile__badge--lost'}`}>{it.type}</span>
-												<span className="profile__meta-item">{it.location}</span>
-												<span className="profile__meta-item">{it.category}</span>
-											</div>
-										</div>
-										<div className="profile__card-actions">
-											<button type="button" className="profile__btn profile__btn--ghost">Edit</button>
-											<button type="button" className="profile__btn profile__btn--danger">Delete</button>
-										</div>
-									</article>
-								))}
-							</div>
-						</section>
-					</div>
-				</div>
-			</section>
-		</div>
-	)
+  useEffect(() => {
+    async function resolveUser() {
+      try {
+        const { data } = await supabase.auth.getUser()
+        const id = data?.user?.id ?? window.localStorage.getItem('userId')
+        setUserId(id ?? null)
+      } catch {
+        const id = window.localStorage.getItem('userId')
+        setUserId(id ?? null)
+      }
+    }
+    resolveUser()
+  }, [])
+
+  useEffect(() => {
+    if (!userId) return
+    fetchItems()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
+
+  async function fetchItems() {
+    setLoading(true)
+    setError(null)
+    try {
+      const [lostRes, foundRes] = await Promise.all([
+        supabase
+          .from('lost-items')
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('found-items')
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false }),
+      ])
+
+      if (lostRes.error) throw lostRes.error
+      if (foundRes.error) throw foundRes.error
+
+      setLostItems(lostRes.data ?? [])
+      setFoundItems(foundRes.data ?? [])
+    } catch (err: any) {
+      setError(err?.message || 'Failed to load items')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function renderItem(item: Item) {
+    const date = item.date_lost ?? item.date_found ?? item.created_at
+    return (
+      <article className="item-card" key={item.id}>
+        <div className="item-media">
+          {item.image_url ? (
+            // show scaled cover image
+            <img src={item.image_url} alt={item.title || 'item image'} className="item-image" />
+          ) : (
+            <div className="item-image placeholder" />
+          )}
+        </div>
+
+        <div className="item-content">
+          <div className="item-row">
+            <h3 className="item-title">{item.title || 'Untitled'}</h3>
+            <time className="item-date">{date ? new Date(date).toLocaleDateString() : ''}</time>
+          </div>
+
+          <div className="item-meta">
+            {item.category && <span className="tag">{item.category}</span>}
+            {item.location && <span className="location">{item.location}</span>}
+          </div>
+
+          {item.description && <p className="item-desc">{item.description}</p>}
+
+          <div className="item-actions">
+            <button type="button" className="btn btn-outline">View</button>
+            <button type="button" className="btn btn-primary">Edit</button>
+          </div>
+        </div>
+      </article>
+    )
+  }
+
+  if (!userId) {
+    return (
+      <main className="profile-page">
+        <div className="profile-card">
+          <h2>My Profile</h2>
+          <p>Please log in to view your items.</p>
+        </div>
+      </main>
+    )
+  }
+
+  const itemsToShow = activeTab === 'lost' ? lostItems : foundItems
+
+  return (
+    <main className="profile-page">
+      <div className="profile-card">
+        <h2>My Items</h2>
+
+        <div className="profile_tabs">
+          <button
+            className={activeTab === 'lost' ? 'active' : ''}
+            onClick={() => setActiveTab('lost')}
+            type="button"
+          >
+            My Lost Items
+          </button>
+          <button
+            className={activeTab === 'found' ? 'active' : ''}
+            onClick={() => setActiveTab('found')}
+            type="button"
+          >
+            My Found Items
+          </button>
+          <button className="refresh" onClick={fetchItems} type="button" aria-label="Refresh">
+            Refresh
+          </button>
+        </div>
+
+        {loading && <div className="loading">Loading...</div>}
+        {error && <div className="error">{error}</div>}
+
+        {!loading && itemsToShow.length === 0 && (
+          <div className="empty">
+            {activeTab === 'lost' ? 'You have not reported any lost items.' : 'You have not posted any found items.'}
+          </div>
+        )}
+
+        <div className="profile-items-list">
+          {itemsToShow.map(renderItem)}
+        </div>
+      </div>
+    </main>
+  )
 }
 
