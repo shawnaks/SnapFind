@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import "../scss/Landing.scss";
 import { TypeAnimation } from "react-type-animation";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
-  const [clicked, setClicked] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <>
       {/*<img className="nav-wave" src={nav_wave} />*/}
@@ -25,15 +24,14 @@ export default function Landing() {
           />
         </div>
         <div style={{ display: "flex", gap: "20px" }}>
-          <button onClick={() => setClicked(true)} className="login-btn">
+          <button onClick={() => navigate("/login")} className="login-btn">
             Login here
           </button>
-          <button onClick={() => setClicked(true)} className="login-btn">
+          <button onClick={() => navigate("/register")} className="login-btn">
             Register here
           </button>
         </div>
       </div>
-      {/* {clicked && <LoginPopup setClicked={setClicked} />} */}
     </>
   );
 }
