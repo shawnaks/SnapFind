@@ -15,12 +15,6 @@ type Item = {
     userEmail: string
 }
 
-const MOCK_ITEMS: Item[] = [
-    { id: '1', title: 'Blue Backpack', description: 'Found near library entrance.', location: 'Main Library', date: '2025-09-21', type: 'found', category: 'Bags', imageUrl: 'https://picsum.photos/seed/backpack/600/400', userName: 'Alex Kim', userEmail: 'alex@example.com' },
-    { id: '2', title: 'iPhone 13', description: 'Black case, small scratch on back.', location: 'Cafeteria', date: '2025-09-20', type: 'lost', category: 'Electronics', imageUrl: 'https://picsum.photos/seed/iphone/600/400', userName: 'Jamie Lee', userEmail: 'jamie@example.com' },
-    { id: '3', title: 'Keys with keychain', description: '3 keys with a red tag.', location: 'Gym', date: '2025-09-18', type: 'found', category: 'Keys', imageUrl: 'https://picsum.photos/seed/keys/600/400', userName: 'Taylor Swift', userEmail: 'taylor@example.com' },
-    { id: '4', title: 'Grey Hoodie', description: 'Medium size, no logo.', location: 'Parking Lot B', date: '2025-09-22', type: 'lost', category: 'Clothing', imageUrl: 'https://picsum.photos/seed/hoodie/600/400', userName: 'Chris Brown', userEmail: 'chris@example.com' },
-]
 
 export default function Home() {
   const [query, setQuery] = useState('')
