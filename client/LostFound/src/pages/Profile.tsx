@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import '../scss/Profile.scss'
 
@@ -89,36 +89,50 @@ export default function Profile() {
     }
   }
 
-  // new: delete an item from the appropriate table
-  async function deleteItem(id: string, type: 'lost' | 'found') {
-    const confirmed = window.confirm('Delete this item? This action cannot be undone.')
+  // removed explicit delete; handled as fallback in markItemResolved
+
+  // best-effort: mark item as resolved; if the table doesn't have a 'resolved' column, fall back to delete
+  async function markItemResolved(id: string, type: 'lost' | 'found') {
+    const confirmText = type === 'lost'
+      ? 'Mark this lost item as found? This will remove it from your active list.'
+      : 'Mark this found item as returned? This will remove it from your active list.'
+    const confirmed = window.confirm(confirmText)
     if (!confirmed) return
 
-    // optimistic UI: mark deleting
     setDeletingId(id)
     setError(null)
-
     try {
       const table = type === 'lost' ? 'lost-items' : 'found-items'
-      const { error: deleteError } = await supabase.from(table).delete().eq('id', id).limit(1)
-      if (deleteError) throw deleteError
+      // attempt to set resolved=true; some schemas may not have this column
+      const { error: updateError } = await supabase
+        .from(table)
+        .update({ resolved: true, resolved_at: new Date().toISOString() } as any)
+        .eq('id', id)
+        .limit(1)
 
-      // remove from local state without refetching
+      if (updateError) {
+        // fallback: delete row if update failed due to missing column or RLS
+        const { error: deleteError } = await supabase.from(table).delete().eq('id', id).limit(1)
+        if (deleteError) throw deleteError
+      }
+
+      // remove from local state
       if (type === 'lost') {
         setLostItems((prev) => prev.filter((it) => it.id !== id))
       } else {
         setFoundItems((prev) => prev.filter((it) => it.id !== id))
       }
     } catch (err: any) {
-      console.error('Delete failed', err)
-      setError(err?.message || 'Failed to delete item')
+      console.error('Mark resolved failed', err)
+      setError(err?.message || 'Failed to update item')
     } finally {
       setDeletingId(null)
     }
   }
 
   function renderItem(item: Item) {
-    const date = item.date_lost ?? item.date_found ?? item.created_at
+    const anyItem: any = item as any
+    const date = anyItem.date ?? item.date_lost ?? item.date_found ?? item.created_at
     const statusWord = activeTab === 'lost' ? 'lost' : 'found'
     const primaryActionLabel = activeTab === 'lost' ? 'Mark As Found' : 'Mark As Returned'
     return (
@@ -153,10 +167,14 @@ export default function Profile() {
           <div className="item-actions">
           </div>
           <div className="item-primary-action">
-            <button type="button" className="btn btn-delete" onClick={() => deleteItem(item.id, activeTab)}
+            <button
+              type="button"
+              className="btn btn-delete"
+              onClick={() => markItemResolved(item.id, activeTab)}
               disabled={deletingId === item.id || loading}
             >
-              {deletingId === item.id ? 'Deleting...' : primaryActionLabel}</button>
+              {deletingId === item.id ? 'Marking…' : primaryActionLabel}
+            </button>
           </div>
         </div>
       </article>
@@ -174,7 +192,8 @@ export default function Profile() {
     )
   }
 
-  const itemsToShow = activeTab === 'lost' ? lostItems : foundItems
+  // Hide items locally if they already have resolved=true
+  const itemsToShow = (activeTab === 'lost' ? lostItems : foundItems).filter((it: any) => it?.resolved !== true)
 
   return (
     <main className="profile-page">

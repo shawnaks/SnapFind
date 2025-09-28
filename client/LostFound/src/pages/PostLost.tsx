@@ -16,6 +16,7 @@ export default function PostLost() {
   const [error, setError] = useState('')
   const [userId, setUserId] = useState<string | null>(null)
   const navigate = useNavigate()
+  const CATEGORY_OPTIONS = ['Bag','Wallet','Umbrella','Laptop','Shoes','Headphones','Charger','ID','Notebook','Key','Phone','Earbud']
 
   // resolve current user id on mount (and keep localStorage in sync)
   useEffect(() => {
@@ -160,15 +161,6 @@ export default function PostLost() {
               style={{ resize: 'none' }}
             />
           </div>
-            <div className='postfound-form-item'>
-              <label>Category</label>
-              <input
-                type="text"
-                placeholder="e.g., Electronics, Wallet, Clothing (required if no image)"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
-            </div>
           <div className='postfound-form-item'>
             <label>Last Known Location</label>
             <input
@@ -182,6 +174,18 @@ export default function PostLost() {
             <label>Date Lost</label>
             <input type="date" value={dateLost} onChange={(e) => setDateLost(e.target.value)} />
           </div>
+          <div className='postfound-form-item'>
+            <label>Category</label>
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="">Select a category (required if no image)</option>
+              {CATEGORY_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className='or-separator'>or</div>
+
           <div className='postfound-form-item'>
             <label>Item Photo</label>
             <div
