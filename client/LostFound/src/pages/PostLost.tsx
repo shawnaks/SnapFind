@@ -13,6 +13,7 @@ export default function PostLost() {
   const [dateLost, setDateLost] = useState<string>(() => new Date().toISOString().slice(0, 10))
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
+  const [predicting, setPredicting] = useState(false)
   const [error, setError] = useState('')
   const [userId, setUserId] = useState<string | null>(null)
   const navigate = useNavigate()
@@ -22,7 +23,6 @@ export default function PostLost() {
   useEffect(() => {
     async function resolveUserId() {
       try {
-        // supabase-js v2: getUser()
         const getUserResult = await supabase.auth.getUser()
         const uidFromGetUser = (getUserResult as any)?.data?.user?.id
         if (uidFromGetUser) {
@@ -31,7 +31,6 @@ export default function PostLost() {
           return
         }
 
-        // fallback to session (some versions / flows)
         const getSession = await supabase.auth.getSession()
         const uidFromSession = (getSession as any)?.data?.session?.user?.id
         if (uidFromSession) {
@@ -40,11 +39,9 @@ export default function PostLost() {
           return
         }
 
-        // last resort: existing value in localStorage
         const stored = window.localStorage.getItem('userId')
         if (stored) setUserId(stored)
       } catch (err) {
-        // ignore — user remains null
         const stored = window.localStorage.getItem('userId')
         if (stored) setUserId(stored)
       }
@@ -80,13 +77,40 @@ export default function PostLost() {
     return publicData.publicUrl
   }
 
+  // Predict category from image — ONLY called on submit when file exists
+  async function predictImageCategory(file: File): Promise<string | null> {
+    try {
+      setPredicting(true)
+      const form = new FormData()
+      form.append('file', file, file.name)
+
+      const base = 'https://testing-2-onwh.onrender.com'
+      const res = await fetch(`${base.replace(/\/$/, '')}/predict/`, {
+        method: 'POST',
+        body: form,
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data?.detail || data?.message || 'Prediction failed')
+      }
+
+      return data.predicted_class ?? null
+    } catch (err) {
+      console.error('Prediction error', err)
+      return null
+    } finally {
+      setPredicting(false)
+    }
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
 
-  if (!title.trim()) return setError('Item title is required')
-  // Require category only when no image is uploaded
-  if (!file && !category.trim()) return setError('Category is required when no image is uploaded')
+    if (!title.trim()) return setError('Item title is required')
+    // Require category only when no image is uploaded
+    if (!file && !category.trim()) return setError('Category is required when no image is uploaded')
 
     // ensure we have a resolved user id
     const uid = userId ?? window.localStorage.getItem('userId')
@@ -99,6 +123,16 @@ export default function PostLost() {
     setLoading(true)
 
     try {
+      // 1) predict category only if file exists and user didn't explicitly choose a category
+      let predictedCategory: string | null = null
+      if (file && !category.trim()) {
+        predictedCategory = await predictImageCategory(file)
+      }
+
+      // final category: prefer user-chosen category, else prediction, else empty
+      const finalCategory = category.trim() || predictedCategory || ''
+
+      // 2) upload image if provided
       let imageUrl: string | null = null
       if (file) {
         try {
@@ -111,16 +145,15 @@ export default function PostLost() {
 
       const insertPayload: any = {
         title,
-        description: description ? description.trim() : "No description provided",
-        location: lastLocation ? lastLocation.trim() : "N/A",
+        description: description ? description.trim() : 'No description provided',
+        location: lastLocation ? lastLocation.trim() : 'N/A',
         date: dateLost,
-        image_url: imageUrl ? imageUrl : "https://ecfdpxyucfbjqphqbeyf.supabase.co/storage/v1/object/public/lost-items/uploads/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg",
-        user_id: uid,   // attach the resolved user uuid
+        image_url: imageUrl ? imageUrl : 'https://ecfdpxyucfbjqphqbeyf.supabase.co/storage/v1/object/public/lost-items/uploads/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
+        user_id: uid,
         created_at: new Date().toISOString(),
       }
-      if (category.trim()) {
-        insertPayload.category = category.trim()
-      }
+
+      if (finalCategory) insertPayload.category = finalCategory
 
       const { error: insertError } = await supabase.from('lost-items').insert(insertPayload)
       if (insertError) throw insertError
@@ -202,15 +235,16 @@ export default function PostLost() {
                 id="file-input"
                 type="file"
                 accept="image/*"
-                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)} // only set file, do NOT predict here
                 style={{ display: 'none' }}
               />
             </div>
             <div className='image-hint'>Uploading a photo can significantly increase the chances of finding your item.</div>
           </div>
+          {predicting && <div style={{ marginBottom: 8 }}>Predicting category…</div>}
           {error && <div className="error">{error}</div>}
 
-          <button type="submit" className="post-btn" disabled={loading}>
+          <button type="submit" className="post-btn" disabled={loading || predicting}>
             {loading ? 'Posting...' : 'Post Lost Item'}
           </button>
         </form>
