@@ -51,3 +51,8 @@ padding: 8px;
   text-align: center;
   text-align-last: center;
 }
+
+.navbar__nav-logout:hover {
+  background-color: #1d4ed8; /* darker primary */
+  color: var(--color_primary_contrast_default, #ffffff);
+}
