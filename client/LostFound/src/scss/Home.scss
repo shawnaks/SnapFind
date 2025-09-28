@@ -422,8 +422,10 @@
 }
 
 .home__results {
-  min-height: 320px;
   display: flex;
+  min-width: 0;      /* CRITICAL: lets .home__grid shrink */
+  overflow: hidden;  /* hide any accidental overflow from children */
+  box-sizing: border-box;
 }
 
 .home__empty {
@@ -432,25 +434,26 @@
 }
 
 .home__grid {
-  display: grid;
-  grid-auto-flow: column;
-  /* place items in columns left-to-right */
-  grid-auto-columns: 260px;
-  /* width of each item column (adjust as needed) */
+  display: flex;
   gap: 1rem;
-  overflow-x: auto;
-  /* enable horizontal scrolling */
+  overflow-x: auto;                 /* internal horizontal scrolling */
   overflow-y: hidden;
   padding-bottom: 8px;
-  /* spacing so last row isn't clipped by scrollbar */
   -webkit-overflow-scrolling: touch;
-  /* smooth scrolling on iOS */
   min-height: 0;
-  max-width: 80%;
-  width: fit-content;
-  // -ms-overflow-style: none;
-  /* IE and Edge */
-  // scrollbar-width: none;
+  width: 100%;                      /* IMPORTANT: constrain width to parent */
+  max-width: 100%;
+  box-sizing: border-box;
+  flex-wrap: nowrap;                /* keep items on a single horizontal line */
+  white-space: nowrap;              /* extra safety for inline elements */
+  // -ms-overflow-style: none;  /* IE and Edge hide scrollbar if desired */
+  // scrollbar-width: none;  
+}
+
+.home__grid > .item-card {
+  flex: 0 0 300px;   /* fixed width card inside the horizontal scroller */
+  min-width: 300px;
+  box-sizing: border-box;
 }
 
 
@@ -458,8 +461,9 @@
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   background: #fff;
-  display: grid;
+  // display: grid;
   grid-template-rows: auto 1fr auto auto;
+  width: 300px;
 }
 
 .item-card__media {
@@ -490,6 +494,7 @@
 .item-card__title {
   margin: 0 0 .25rem 0;
   font-size: 1.05rem;
+  color: black;
 }
 
 .item-card__desc {

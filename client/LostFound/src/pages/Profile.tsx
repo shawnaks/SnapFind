@@ -144,7 +144,7 @@ export default function Profile() {
             </div>
           )}
           <div className="item-actions">
-            <button type="button" className="btn btn-edit">Edit</button>
+            {/* <button type="button" className="btn btn-edit">Edit</button> */}
             <button type="button" className="btn btn-delete" onClick={() => deleteItem(item.id, activeTab)}
               disabled={deletingId === item.id || loading}
             >

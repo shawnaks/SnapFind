@@ -107,10 +107,10 @@ export default function PostLost() {
 
       const insertPayload: any = {
         title,
-        description,
-        location: lastLocation,
+        description: description ? description.trim() : "No description provided",
+        location: lastLocation ? lastLocation.trim() : "N/A",
         date: dateLost,
-        image_url: imageUrl,
+        image_url: imageUrl ? imageUrl : "https://ecfdpxyucfbjqphqbeyf.supabase.co/storage/v1/object/public/lost-items/uploads/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg",
         user_id: uid,   // attach the resolved user uuid
         created_at: new Date().toISOString(),
       }
