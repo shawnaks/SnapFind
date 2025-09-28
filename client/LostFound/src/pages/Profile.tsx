@@ -115,6 +115,34 @@ export default function Profile() {
     }
   }
 
+  // new: delete an item from the appropriate table
+  async function deleteItem(id: string, type: 'lost' | 'found') {
+    const confirmed = window.confirm('Delete this item? This action cannot be undone.')
+    if (!confirmed) return
+
+    // optimistic UI: mark deleting
+    setDeletingId(id)
+    setError(null)
+
+    try {
+      const table = type === 'lost' ? 'lost-items' : 'found-items'
+      const { error: deleteError } = await supabase.from(table).delete().eq('id', id).limit(1)
+      if (deleteError) throw deleteError
+
+      // remove from local state without refetching
+      if (type === 'lost') {
+        setLostItems((prev) => prev.filter((it) => it.id !== id))
+      } else {
+        setFoundItems((prev) => prev.filter((it) => it.id !== id))
+      }
+    } catch (err: any) {
+      console.error('Delete failed', err)
+      setError(err?.message || 'Failed to delete item')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   function renderItem(item: Item) {
     const date = item.date_lost ?? item.date_found ?? item.created_at
     const where = item.location ? `${activeTab === 'lost' ? 'lost' : 'found'} at ${item.location}` : ''

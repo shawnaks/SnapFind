@@ -15,12 +15,16 @@ type Item = {
   userEmail: string
 }
 
-
 export default function Home() {
   const [query, setQuery] = useState('')
   const [location, setLocation] = useState('')
   const [kind, setKind] = useState<'all' | 'found' | 'lost'>('all')
   const [category, setCategory] = useState<'all' | string>('all')
+
+  // New: upload image state
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [uploadFile, setUploadFile] = useState<File | null>(null)
+  const [uploadPreview, setUploadPreview] = useState<string>('src/assets/uploadplaceholder.jpg') // placeholder path
 
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(false)
@@ -30,6 +34,15 @@ export default function Home() {
     fetchItems()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // cleanup object URLs
+  useEffect(() => {
+    return () => {
+      if (uploadPreview && uploadPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(uploadPreview)
+      }
+    }
+  }, [uploadPreview])
 
   async function fetchItems() {
     setLoading(true)
@@ -121,6 +134,16 @@ export default function Home() {
     )
   }, [items, query, location, kind, category])
 
+  // handle file selection
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] ?? null
+    if (!f) return
+    setUploadFile(f)
+    // revoke previous blob url if any
+    if (uploadPreview && uploadPreview.startsWith('blob:')) URL.revokeObjectURL(uploadPreview)
+    const url = URL.createObjectURL(f)
+    setUploadPreview(url)
+  }
 
   return (
     <div className="home">
@@ -140,19 +163,57 @@ export default function Home() {
               onChange={(e) => setQuery(e.target.value)}
             />
           </form>
+
           <label>Type</label>
           <select className="home__select" value={kind} onChange={(e) => setKind(e.target.value as any)}>
             <option value="all">All</option>
             <option value="found">Found</option>
             <option value="lost">Lost</option>
           </select>
-          <label>Category</label>
-          <select className="home__select" value={category} onChange={(e) => setCategory(e.target.value as any)}>
-            {categories.map(c => (
-              <option key={c} value={c}>{c[0].toUpperCase() + c.slice(1)}</option>
-            ))}
-          </select>
-          <button type="button" className="home__search-btn">Search</button>
+
+          {/* replaced category select with image upload button */}
+          <label>Upload Image</label>
+          <div className="home__upload">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+            <button
+              type="button"
+              className="home__upload-btn"
+              onClick={() => fileInputRef.current?.click()}
+              aria-label="Upload image"
+              style={{
+                width: 120,
+                height: 120,
+                padding: 0,
+                border: '1px dashed #ccc',
+                borderRadius: 8,
+                background: 'transparent',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <img
+                src={uploadPreview}
+                alt="Upload preview"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: 6,
+                  display: 'block',
+                }}
+              />
+            </button>
+          </div>
+
+          <button type="button" className="home__search-btn" onClick={() => fetchItems()}>Search</button>
         </aside>
         <section className="home__results">
           {visible.length === 0 && <div className="home__empty">No items match your search.</div>}
