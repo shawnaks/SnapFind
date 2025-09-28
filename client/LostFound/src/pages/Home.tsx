@@ -23,7 +23,7 @@ export default function Home() {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [uploadFile, setUploadFile] = useState<File | null>(null)
-  const [uploadPreview, setUploadPreview] = useState<string>('/uploadplaceholder.jpg')
+  const [uploadPreview, setUploadPreview] = useState<string>('src/assets/uploadplaceholder.jpg')
   const [predicting, setPredicting] = useState(false)
   const [predictedCategory, setPredictedCategory] = useState<string | null>(null)
 
