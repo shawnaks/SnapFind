@@ -145,8 +145,8 @@ export default function Profile() {
 
   function renderItem(item: Item) {
     const date = item.date_lost ?? item.date_found ?? item.created_at
-    const where = item.location ? `${activeTab === 'lost' ? 'lost' : 'found'} at ${item.location}` : ''
-    const combined = [item.description, where].filter(Boolean).join(' ')
+    const statusWord = activeTab === 'lost' ? 'lost' : 'found'
+    const primaryActionLabel = activeTab === 'lost' ? 'Mark As Found' : 'Mark As Returned'
     return (
       <article className="item-card" key={item.id}>
         <div className="item-media">
@@ -164,19 +164,25 @@ export default function Profile() {
             <time className="item-date">{date ? new Date(date).toLocaleDateString() : ''}</time>
           </div>
           <p className="item-desc">
-            {combined}
+            {item.description}
+            {item.location && (
+              <>
+                {' '}{statusWord} at <strong>{item.location}</strong>
+              </>
+            )}
           </p>
           {item.category && (
             <div className="item-meta">
-              <span className="tag">Category: {item.category}</span>
+              <span className="tag">Category: <strong>{item.category}</strong></span>
             </div>
           )}
           <div className="item-actions">
-            {/* <button type="button" className="btn btn-edit">Edit</button> */}
+          </div>
+          <div className="item-primary-action">
             <button type="button" className="btn btn-delete" onClick={() => deleteItem(item.id, activeTab)}
               disabled={deletingId === item.id || loading}
             >
-              {deletingId === item.id ? 'Deleting...' : 'Delete'}</button>
+              {deletingId === item.id ? 'Deleting...' : primaryActionLabel}</button>
           </div>
         </div>
       </article>

@@ -171,6 +171,7 @@
 .profile-items-list .item-meta > :not(.tag) { padding-left: 0; margin-left: 0; }
 .profile-items-list .item-desc { margin: 0; color: #4a5568; font-size: .95rem; }
 .profile-items-list .item-actions { display: flex; gap: 8px; }
+.profile-items-list .item-primary-action { display: flex; justify-content: center; margin-top: 8px; }
 
 /* Buttons: view on the left, delete on the right */
 .profile-items-list .item-actions {
@@ -181,7 +182,7 @@
 .profile-items-list .btn { padding: .5rem .9rem; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid transparent; background: none transparent; transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
 .profile-items-list .btn.btn-edit { background: none transparent; color: var(--color_primary_default, #2563eb); border-color: var(--color_primary_default, #2563eb); }
 .profile-items-list .btn.btn-delete {
-  background-color: var(--color_destructive_default, #dc2626);
+  background-color: #16a34a; /* green-600 */
   color: #fff;
   border-color: transparent;
 }
@@ -189,9 +190,7 @@
 .profile-items-list .btn.btn-edit:hover {
   background-color: rgba(37, 99, 235, 0.08);
 }
-.profile-items-list .btn.btn-delete:hover {
-  filter: brightness(0.92);
-}
+.profile-items-list .btn.btn-delete:hover { filter: brightness(0.95); }
 
 @media (max-width: 860px) {
   .profile-two-col {
