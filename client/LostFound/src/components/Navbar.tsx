@@ -6,7 +6,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar__logo-wrap">
         <img className="navbar__logo-img" src="favicon.ico" alt="Logo" />
-        <Link to="/home" className="navbar__logo-text">Lost & Found</Link>
+        <Link to="/home" className="navbar__logo-text">SnapFind</Link>
       </div>
       <nav className="navbar__nav navbar__nav--right">
         <NavLink to="/post-lost" className="navbar__nav-link">Post Lost Items</NavLink>

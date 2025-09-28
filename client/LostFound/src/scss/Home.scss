@@ -289,6 +289,10 @@
   min-width: 0;
 }
 
+/* Display category with a capitalized first letter without changing data values */
+.pill--category { text-transform: capitalize; }
+.pill--category.cat--id { text-transform: none; }
+
 .home__filters {
   overflow: visible;
   display: grid;
@@ -322,6 +326,12 @@
   width: auto;
   margin: 8px 0 0; /* move keywords form slightly down from the top */
   z-index: 4;
+}
+
+/* Generic field wrapper to group label + control with consistent inner spacing */
+.home__field {
+  display: grid;
+  row-gap: 4px; /* match spacing used in keywords section (label to input) */
 }
 
 .home__filters-title {
@@ -425,7 +435,7 @@
   min-height: 40px;
   width: 100%;
   box-sizing: border-box;
-  margin-top: -30px; /* pull the select closer to its Type label */
+  margin-top: 0; /* spacing handled by .home__field */
 }
 
 .home__search-btn {
@@ -471,10 +481,8 @@
   box-sizing: border-box;
 }
 
-/* Pull upload control closer to its label */
-.home__upload {
-  margin-top: -50px;
-}
+/* Upload stays close to its label via .home__field gap */
+.home__upload { margin-top: -15px; }
 
 /* Make all field titles/labels black */
 .home__filters label,

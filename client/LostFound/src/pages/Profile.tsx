@@ -161,7 +161,11 @@ export default function Profile() {
           </p>
           {item.category && (
             <div className="item-meta">
-              <span className="tag">Category: <strong>{item.category}</strong></span>
+              <span className="tag">
+                Category: <strong className={item.category === 'id' ? 'cat--id' : ''}>
+                  {item.category === 'id' ? 'ID' : item.category}
+                </strong>
+              </span>
             </div>
           )}
           <div className="item-actions">

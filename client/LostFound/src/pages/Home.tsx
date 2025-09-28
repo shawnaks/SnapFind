@@ -180,7 +180,7 @@ export default function Home() {
   return (
     <div className="home">
       <section className="home__hero">
-        <h1 className="home__title">Lost & Found Hub</h1>
+        <h1 className="home__title">SnapFind</h1>
         <p className="home__subtitle">Helping reunite lost items with their owners through the power of community. Search through found items or browse lost items to help others.</p>
       </section>
 
@@ -196,52 +196,56 @@ export default function Home() {
             />
           </form>
 
-          <label>Type</label>
-          <select className="home__select" value={kind} onChange={(e) => setKind(e.target.value as any)}>
-            <option value="all">All</option>
-            <option value="found">Found</option>
-            <option value="lost">Lost</option>
-          </select>
+          <div className="home__field">
+            <label>Type</label>
+            <select className="home__select" value={kind} onChange={(e) => setKind(e.target.value as any)}>
+              <option value="all">All</option>
+              <option value="found">Found</option>
+              <option value="lost">Lost</option>
+            </select>
+          </div>
 
-          <label>Upload Image</label>
-          <div className="home__upload">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-            <button
-              type="button"
-              className="home__upload-btn"
-              onClick={() => fileInputRef.current?.click()}
-              aria-label="Upload image"
-              style={{
-                width: 120,
-                height: 120,
-                padding: 0,
-                border: '1px dashed #ccc',
-                borderRadius: 8,
-                background: 'transparent',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <img
-                src={uploadPreview}
-                alt="Upload preview"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  borderRadius: 6,
-                  display: 'block',
-                }}
+          <div className="home__field">
+            <label>Upload Image</label>
+            <div className="home__upload">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
               />
-            </button>
+              <button
+                type="button"
+                className="home__upload-btn"
+                onClick={() => fileInputRef.current?.click()}
+                aria-label="Upload image"
+                style={{
+                  width: 120,
+                  height: 120,
+                  padding: 0,
+                  border: '1px dashed #ccc',
+                  borderRadius: 8,
+                  background: 'transparent',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <img
+                  src={uploadPreview}
+                  alt="Upload preview"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: 6,
+                    display: 'block',
+                  }}
+                />
+              </button>
+            </div>
           </div>
 
           <div style={{ marginTop: 8 }}>
@@ -269,7 +273,9 @@ export default function Home() {
                   </div>
                   <p className="item-card__desc">{i.description}</p>
                   <div className="item-card__chips">
-                    <span className="pill pill--category">{i.category}</span>
+                    <span className={`pill pill--category ${i.category === 'id' ? 'cat--id' : ''}`}>
+                      {i.category === 'id' ? 'ID' : i.category}
+                    </span>
                   </div>
                   <div className="item-card__user">Posted by {i.userName}</div>
                 </div>

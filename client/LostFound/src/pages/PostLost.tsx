@@ -17,7 +17,7 @@ export default function PostLost() {
   const [error, setError] = useState('')
   const [userId, setUserId] = useState<string | null>(null)
   const navigate = useNavigate()
-  const CATEGORY_OPTIONS = ['Bag','Wallet','Umbrella','Laptop','Shoes','Headphones','Charger','ID','Notebook','Key','Phone','Earbud']
+  const CATEGORY_OPTIONS = ['bag','wallet','umbrella','laptop','shoes','headphones','charger','id','notebook','key','phone','earbud']
 
   // resolve current user id on mount (and keep localStorage in sync)
   useEffect(() => {
@@ -212,7 +212,9 @@ export default function PostLost() {
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
               <option value="">Select a category (required if no image)</option>
               {CATEGORY_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>{opt}</option>
+                <option key={opt} value={opt}>
+                  {opt === 'id' ? 'ID' : opt.charAt(0).toUpperCase() + opt.slice(1)}
+                </option>
               ))}
             </select>
           </div>

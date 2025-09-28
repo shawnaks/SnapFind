@@ -170,6 +170,8 @@
 /* ensure any non-tag inline sibling has no left padding/margin */
 .profile-items-list .item-meta > :not(.tag) { padding-left: 0; margin-left: 0; }
 .profile-items-list .item-desc { margin: 0; color: #4a5568; font-size: .95rem; }
+.profile-items-list .item-meta .tag strong { text-transform: capitalize; }
+.profile-items-list .item-meta .tag strong.cat--id { text-transform: none; }
 .profile-items-list .item-actions { display: flex; gap: 8px; }
 .profile-items-list .item-primary-action { display: flex; justify-content: center; margin-top: 8px; }
 
