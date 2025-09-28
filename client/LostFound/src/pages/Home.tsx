@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import '../scss/Home.scss'
-import supabase from '../lib/supabaseClient'
 
 type Item = {
   id: string
@@ -21,10 +21,11 @@ export default function Home() {
   const [kind, setKind] = useState<'all' | 'found' | 'lost'>('all')
   const [category, setCategory] = useState<'all' | string>('all')
 
-  // New: upload image state
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [uploadFile, setUploadFile] = useState<File | null>(null)
-  const [uploadPreview, setUploadPreview] = useState<string>('src/assets/uploadplaceholder.jpg') // placeholder path
+  const [uploadPreview, setUploadPreview] = useState<string>('/uploadplaceholder.jpg')
+  const [predicting, setPredicting] = useState(false)
+  const [predictedCategory, setPredictedCategory] = useState<string | null>(null)
 
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(false)
@@ -35,12 +36,9 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // cleanup object URLs
   useEffect(() => {
     return () => {
-      if (uploadPreview && uploadPreview.startsWith('blob:')) {
-        URL.revokeObjectURL(uploadPreview)
-      }
+      if (uploadPreview && uploadPreview.startsWith('blob:')) URL.revokeObjectURL(uploadPreview)
     }
   }, [uploadPreview])
 
@@ -59,7 +57,6 @@ export default function Home() {
       const lostData = (lostRes.data ?? []) as any[]
       const foundData = (foundRes.data ?? []) as any[]
 
-      // collect user ids and try to fetch profiles (if profiles table exists)
       const userIds = Array.from(
         new Set(
           [...lostData, ...foundData]
@@ -86,7 +83,7 @@ export default function Home() {
         category: r.category,
         location: r.location,
         date: r.date ?? r.date_lost ?? r.created_at,
-        imageUrl: r.image_url ?? r.imageUrl ?? '',
+        imageUrl: r.image_url ?? '',
         userName: profilesMap[r.user_id]?.username ?? '',
         userEmail: profilesMap[r.user_id]?.email ?? '',
       }))
@@ -98,8 +95,8 @@ export default function Home() {
         description: r.description,
         category: r.category,
         location: r.location,
-        date: (r.date ?? (r.date_found ?? r.created_at)) as string,
-        imageUrl: r.image_url ?? r.imageUrl ?? '',
+        date: r.date ?? r.date_found ?? r.created_at,
+        imageUrl: r.image_url ?? '',
         userName: profilesMap[r.user_id]?.username ?? '',
         userEmail: profilesMap[r.user_id]?.email ?? '',
       }))
@@ -134,15 +131,50 @@ export default function Home() {
     )
   }, [items, query, location, kind, category])
 
-  // handle file selection
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0] ?? null
     if (!f) return
     setUploadFile(f)
-    // revoke previous blob url if any
     if (uploadPreview && uploadPreview.startsWith('blob:')) URL.revokeObjectURL(uploadPreview)
-    const url = URL.createObjectURL(f)
-    setUploadPreview(url)
+    setUploadPreview(URL.createObjectURL(f))
+    // Do NOT predict here — prediction runs when user clicks Search
+  }
+
+  async function predictImage(file: File): Promise<string | null> {
+    try {
+      setPredicting(true)
+      const form = new FormData()
+      form.append('file', file, file.name)
+      const base = 'https://testing-2-onwh.onrender.com'
+      const res = await fetch(`${base.replace(/\/$/, '')}/predict/`, {
+        method: 'POST',
+        body: form,
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.detail || data?.message || 'Prediction failed')
+      return data.predicted_class ?? null
+    } catch (err) {
+      console.error('Prediction error', err)
+      return null
+    } finally {
+      setPredicting(false)
+    }
+  }
+
+  // called when user clicks Search — run prediction (if file selected), then fetch items and apply predicted category
+  async function handleSearch() {
+    setError(null)
+    // if there's an uploaded image, get prediction and set category to predicted
+    if (uploadFile) {
+      const predicted = await predictImage(uploadFile)
+      if (predicted) {
+        setPredictedCategory(predicted)
+        setCategory(predicted)
+        console.log('Predicted category:', predicted);
+      }
+    }
+    // refresh items and let visible recompute using updated category
+    await fetchItems()
   }
 
   return (
@@ -171,7 +203,6 @@ export default function Home() {
             <option value="lost">Lost</option>
           </select>
 
-          {/* replaced category select with image upload button */}
           <label>Upload Image</label>
           <div className="home__upload">
             <input
@@ -213,10 +244,18 @@ export default function Home() {
             </button>
           </div>
 
-          <button type="button" className="home__search-btn" onClick={() => fetchItems()}>Search</button>
+          <div style={{ marginTop: 8 }}>
+            <button type="button" className="home__search-btn" onClick={handleSearch} disabled={predicting || loading}>
+              {predicting ? 'Predicting...' : 'Search'}
+            </button>
+            {predictedCategory && <div style={{ marginTop: 8, fontSize: 13 }}>Predicted category: <strong>{predictedCategory}</strong></div>}
+          </div>
         </aside>
+
         <section className="home__results">
-          {visible.length === 0 && <div className="home__empty">No items match your search.</div>}
+          {loading && <div className="home__empty">Loading items...</div>}
+          {error && <div className="home__empty">{error}</div>}
+          {!loading && visible.length === 0 && <div className="home__empty">No items match your search.</div>}
           <div className="home__grid">
             {visible.map((i) => (
               <article key={i.id} className="item-card">

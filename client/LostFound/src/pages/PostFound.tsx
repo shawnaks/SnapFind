@@ -11,7 +11,9 @@ export default function PostFound() {
     const [location, setLocation] = useState('')
     const [dateFound, setDateFound] = useState<string>(() => new Date().toISOString().slice(0, 10))
     const [file, setFile] = useState<File | null>(null)
+    const [category, setCategory] = useState<string>('') // will be set from prediction on submit
     const [loading, setLoading] = useState(false)
+    const [predicting, setPredicting] = useState(false)
     const [error, setError] = useState('')
     const navigate = useNavigate()
 
@@ -42,6 +44,33 @@ export default function PostFound() {
         return publicData.publicUrl
     }
 
+    // call the external predict API (only used from submit)
+    async function predictImageCategory(file: File): Promise<string | null> {
+        try {
+            setPredicting(true)
+            const form = new FormData()
+            form.append('file', file, file.name)
+
+            const base = 'https://testing-2-onwh.onrender.com'
+            const res = await fetch(`${base.replace(/\/$/, '')}/predict/`, {
+                method: 'POST',
+                body: form,
+            })
+
+            const data = await res.json()
+            if (!res.ok) {
+                throw new Error(data?.detail || data?.message || 'Prediction request failed')
+            }
+
+            return data?.predicted_class ?? null
+        } catch (err: any) {
+            console.error('Prediction error', err)
+            return null
+        } finally {
+            setPredicting(false)
+        }
+    }
+
     async function submit(e: React.FormEvent) {
         e.preventDefault()
         setError('')
@@ -49,7 +78,6 @@ export default function PostFound() {
         if (!title.trim()) return setError('Item title is required')
         if (!file) return setError('Please upload an image (required).')
 
-        // ensure we have a signed-in user
         const { data: userData } = await supabase.auth.getUser()
         const userId = userData?.user?.id ?? window.localStorage.getItem('userId')
         if (!userId) {
@@ -61,6 +89,13 @@ export default function PostFound() {
         setLoading(true)
 
         try {
+            // PREDICTION HAPPENS ONLY HERE (on submit)
+            const predicted = await predictImageCategory(file)
+            if (predicted) {
+                setCategory(predicted)
+            }
+
+            // upload image to Supabase storage
             let imageUrl: string | null = null
             try {
                 imageUrl = await uploadImage(file)
@@ -71,13 +106,15 @@ export default function PostFound() {
                 return
             }
 
+            // insert row into found-items including predicted category (if any)
             const insertPayload: any = {
                 title,
                 description,
                 location,
                 date: dateFound,
                 image_url: imageUrl,
-                user_id: userId,             // attach user uuid
+                category: category || predicted || '',
+                user_id: userId,
                 created_at: new Date().toISOString(),
             }
 
@@ -109,6 +146,7 @@ export default function PostFound() {
                             required
                         />
                     </div>
+
                     <div className="postfound-form-item">
                         <label>Description</label>
                         <textarea
@@ -118,9 +156,8 @@ export default function PostFound() {
                             rows={6}
                         />
                     </div>
+
                     <div className="postfound-form-item">
-
-
                         <label>Where did you find it?</label>
                         <input
                             type="text"
@@ -129,10 +166,12 @@ export default function PostFound() {
                             onChange={(e) => setLocation(e.target.value)}
                         />
                     </div>
+
                     <div className="postfound-form-item">
                         <label>Date Found</label>
                         <input type="date" value={dateFound} onChange={(e) => setDateFound(e.target.value)} />
                     </div>
+
                     <div className="postfound-form-item">
                         <label>Upload Photo <span style={{ color: '#b00020' }}>*</span></label>
                         <div
@@ -151,6 +190,7 @@ export default function PostFound() {
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => {
+                                    // only set the file here — do NOT call predict
                                     setFile(e.target.files?.[0] ?? null)
                                     setError('')
                                 }}
@@ -159,9 +199,11 @@ export default function PostFound() {
                         </div>
                     </div>
 
+                    {predicting && <div style={{ marginBottom: 8 }}>Predicting category…</div>}
+                    {category && <div style={{ marginBottom: 8 }}>Category: <strong>{category}</strong></div>}
                     {error && <div className="error">{error}</div>}
 
-                    <button type="submit" className="post-btn" disabled={loading || !file}>
+                    <button type="submit" className="post-btn" disabled={loading || predicting || !file}>
                         {loading ? 'Posting...' : 'Post Found Item'}
                     </button>
                 </form>
