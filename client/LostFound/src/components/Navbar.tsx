@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar__logo-wrap">
-        <img className="navbar__logo-img" src="/vite.svg" alt="Logo" />
+        <img className="navbar__logo-img" src="favicon.ico" alt="Logo" />
         <Link to="/home" className="navbar__logo-text">Lost & Found</Link>
       </div>
       <nav className="navbar__nav navbar__nav--right">
