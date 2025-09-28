@@ -109,8 +109,8 @@ export default function PostFound() {
             // insert row into found-items including predicted category (if any)
             const insertPayload: any = {
                 title,
-                description,
-                location,
+                description: description ? description.trim() : "No description provided",
+                location: location ? location.trim() : "N/A",
                 date: dateFound,
                 image_url: imageUrl,
                 category: category || predicted || '',
