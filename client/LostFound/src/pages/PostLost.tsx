@@ -8,6 +8,7 @@ const STORAGE_BUCKET = 'lost-items' // ensure this bucket exists in Supabase
 export default function PostLost() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [category, setCategory] = useState('')
   const [lastLocation, setLastLocation] = useState('')
   const [dateLost, setDateLost] = useState<string>(() => new Date().toISOString().slice(0, 10))
   const [file, setFile] = useState<File | null>(null)
@@ -56,7 +57,7 @@ export default function PostLost() {
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
     const path = `uploads/${fileName}`
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from(STORAGE_BUCKET)
       .upload(path, file, {
         cacheControl: '3600',
@@ -82,7 +83,9 @@ export default function PostLost() {
     e.preventDefault()
     setError('')
 
-    if (!title.trim()) return setError('Item title is required')
+  if (!title.trim()) return setError('Item title is required')
+  // Require category only when no image is uploaded
+  if (!file && !category.trim()) return setError('Category is required when no image is uploaded')
 
     // ensure we have a resolved user id
     const uid = userId ?? window.localStorage.getItem('userId')
@@ -113,6 +116,9 @@ export default function PostLost() {
         image_url: imageUrl ? imageUrl : "https://ecfdpxyucfbjqphqbeyf.supabase.co/storage/v1/object/public/lost-items/uploads/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg",
         user_id: uid,   // attach the resolved user uuid
         created_at: new Date().toISOString(),
+      }
+      if (category.trim()) {
+        insertPayload.category = category.trim()
       }
 
       const { error: insertError } = await supabase.from('lost-items').insert(insertPayload)
@@ -154,6 +160,15 @@ export default function PostLost() {
               style={{ resize: 'none' }}
             />
           </div>
+            <div className='postfound-form-item'>
+              <label>Category</label>
+              <input
+                type="text"
+                placeholder="e.g., Electronics, Wallet, Clothing (required if no image)"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </div>
           <div className='postfound-form-item'>
             <label>Last Known Location</label>
             <input
