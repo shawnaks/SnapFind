@@ -147,6 +147,13 @@ select {
     border: 2px solid #000000;
 }
 
+.or-separator {
+    text-align: center;
+    color: #6b7280; /* gray-500 */
+    margin: 8px 0;
+    font-family: var(--font_default);
+}
+
 button {
     background-color: #2563eb;
     margin-top: 20px;

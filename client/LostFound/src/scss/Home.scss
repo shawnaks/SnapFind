@@ -363,6 +363,58 @@
   z-index: 5;
 }
 
+/* Do not visually change on hover/click */
+.home__input:hover,
+.home__input:active {
+  background-color: var(--color_aiRFjJTaPh_default, #ffffff);
+  border-color: var(--color_aiRFjJTaPg_default, #cbd5e0);
+  box-shadow: none;
+}
+
+/* Keep focus styles steady and size fixed */
+.home__input:focus,
+.home__input:focus-visible {
+  background-color: var(--color_aiRFjJTaPh_default, #ffffff);
+  border-color: var(--color_aiRFjJTaPg_default, #cbd5e0) !important;
+  border-width: 1px !important;
+  outline: none;
+  box-shadow: none;
+  height: 40px;
+}
+
+.home__input::placeholder {
+  font-size: 16px; /* keep placeholder constant */
+}
+
+/* Keep placeholder size constant on focus as well */
+.home__input:focus::placeholder,
+.home__input:focus-visible::placeholder {
+  font-size: 16px;
+}
+
+/* Cross-browser placeholder consistency */
+.home__input::-webkit-input-placeholder { font-size: 16px; }
+.home__input:-ms-input-placeholder { font-size: 16px; }
+.home__input::-ms-input-placeholder { font-size: 16px; }
+.home__input::-moz-placeholder { font-size: 16px; }
+
+/* Ensure general inputs in filters also stay steady on hover/click */
+.home__filters input:hover,
+.home__filters input:active {
+  background-color: #fff;
+  border-color: #cbd5e0;
+  box-shadow: none;
+}
+
+.home__filters input:focus,
+.home__filters input:focus-visible {
+  background-color: #fff;
+  border-color: #cbd5e0 !important;
+  border-width: 1px !important;
+  outline: none;
+  box-shadow: none;
+}
+
 .home__select {
   background-color: var(--color_aiRFjJTaPh_default, #ffffff);
   border: 1px solid var(--color_aiRFjJTaPg_default, #cbd5e0);
