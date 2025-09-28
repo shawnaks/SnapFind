@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Global font family */
+  --font_default: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font_default);
   line-height: 1.5;
   font-weight: 400;
 
@@ -26,6 +30,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100dvh; /* ensure body fills the viewport */
+  font-family: var(--font_default);
 }
 
 h1 {

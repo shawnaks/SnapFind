@@ -62,7 +62,7 @@ body,
 .image-hint{
     font-size: 14px;
     color: gray;
-    font-family: Raleway, sans-serif;
+    font-family: var(--font_default);
     margin-top: 5px;
     margin-bottom: 10px;
 }
@@ -81,7 +81,7 @@ body,
 
 label {
     font-size: 15px;
-    font-family: Raleway, sans-serif;
+    font-family: var(--font_default);
     color: black
 }
 
@@ -91,10 +91,39 @@ input:focus-visible {
     height: 40px;
     border-radius: 10px;
     font-size: 20px;
-    font-family: Raleway, sans-serif;
-    color: gray;
+    font-family: var(--font_default);
+    color: #111827; /* dark text for typed input */
     border: 2px solid #000000;
     margin: 0;
+}
+
+/* Placeholder styling: lighter than typed text, same font */
+input::placeholder,
+textarea::placeholder {
+    color: #9ca3af; /* gray-400 */
+    font-family: var(--font_default);
+    opacity: 1;
+}
+/* Cross-browser placeholder support */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #9ca3af;
+    font-family: var(--font_default);
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder { /* Firefox 19+ */
+    color: #9ca3af;
+    font-family: var(--font_default);
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder { /* IE 10+ */
+    color: #9ca3af;
+    font-family: var(--font_default);
+}
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder { /* Edge */
+    color: #9ca3af;
+    font-family: var(--font_default);
 }
 
 textarea {
@@ -102,8 +131,8 @@ textarea {
     height: 80px;
     border-radius: 10px;
     font-size: 20px;
-    font-family: Raleway, sans-serif;
-    color: gray;
+    font-family: var(--font_default);
+    color: #111827; /* dark text for typed input */
     resize: none;
     border: 2px solid #000000;
 }
@@ -113,8 +142,8 @@ select {
     height: 40px;
     border-radius: 10px;
     font-size: 20px;
-    font-family: Raleway, sans-serif;
-    color: gray;
+    font-family: var(--font_default);
+    color: #111827;
     border: 2px solid #000000;
 }
 
@@ -126,14 +155,14 @@ button {
 h1 {
     color: black;
     font-size: 30px;
-    font: Raleway, sans-serif;
+    font-family: var(--font_default);
     margin: 0;;
 }
 
 .subtitle {
     color: black;
     font-size: 15px;
-    font: Raleway, sans-serif;
+    font-family: var(--font_default);
 }
 
 .postfound-switch {
@@ -160,7 +189,7 @@ h1 {
 .file-name {
     font-size: 20px;
     font-weight: 700;
-    font-family: Raleway, sans-serif;
+    font-family: var(--font_default);
     color: black;
     padding-left: 10px;
 }
@@ -168,6 +197,6 @@ h1 {
 .upload-text {
     font-size: 20px;
     font-weight: 700;
-    font-family: Raleway, sans-serif;
+    font-family: var(--font_default);
     color: black;
 }
