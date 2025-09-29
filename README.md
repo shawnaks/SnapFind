@@ -3,7 +3,7 @@
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<img src="C:\Users\caomi\GitHub\lost-and-found\client\LostFound\public\favicon32.png" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
+<img src="https://github.com/shawnaks/client/LostFound/public/favicon.ico" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
 
 # LOST-AND-FOUND
 
