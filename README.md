@@ -98,14 +98,13 @@
 ---
 
 ## Overview
-
-
+After seeing a sign in Klaus mentioning a lengthy process for retrieving lost items, we realized that Georgia Tech has a chaotic, decentralized, system of retrieving and reporting lost items. We ourselves have seen clearly lost items in the CULC frequently, but have not reported them due to the lack of clarity on the item reporting process. We came up with SnapFind as a remedy to this issue to hopefully streamline the lost and found process at Georgia Tech.
 
 ---
 
 ## Features
 
-<code>❯ REPLACE-ME</code>
+SnapFind is an application that allows users to report lost items, adding the item to a database. This database can then be searched by people who have lost their items, allowing them to track down their item. Under the hood, convolutional neural network (CNN) techniques are used to classify the user images into object types, simplifying the database search for users since the items are tagged with their object type. For example, a picture of a laptop submitted by a user would be tagged as a laptop by the CNN, which can be used as a filter in the database. The model was trained on a large dataset of annotated images.
 
 ---
 
