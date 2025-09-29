@@ -5,7 +5,7 @@
 
 <img src="https://github.com/shawnaks/lost-and-found/blob/main/client/LostFound/public/android192_2.png" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
 
-# LOST-AND-FOUND
+# SnapFind
 
 <em></em>
 
