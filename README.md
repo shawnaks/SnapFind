@@ -78,27 +78,17 @@ The repository contains both halves of the stack:
 
 ### Architecture
 
-```text
-┌──────────────────────────────┐
-│   React + TypeScript client  │
-│         (Vite build)         │
-└──────────────┬───────────────┘
-               │
-     ┌─────────┼──────────────────────────────┐
-     │         │                              │
-     ▼         ▼                              ▼
-┌─────────┐ ┌──────────────────┐   ┌──────────────────────────┐
-│Supabase │ │ Supabase Postgres│   │ FastAPI backend          │
-│  Auth   │ │  lost-items      │   │  backend/                │
-│profiles │ │  found-items     │   │  POST /predict/          │
-└─────────┘ └──────────────────┘   │  ResNet-18 → class name  │
-               │                   └──────────────────────────┘
-               ▼
-      ┌──────────────────┐
-      │ Supabase Storage │
-      │  lost-items      │
-      │  found-items     │
-      └──────────────────┘
+```mermaid
+flowchart TD
+    A["React + TypeScript client (Vite build)"]
+    B["Supabase Auth (profiles)"]
+    C["Supabase Postgres (lost-items, found-items)"]
+    D["FastAPI backend (backend/)<br/>POST /predict/<br/>ResNet-18 -> class name"]
+    E["Supabase Storage (lost-items, found-items)"]
+    A --> B
+    A --> C
+    A --> D
+    C --> E
 ```
 
 ---
