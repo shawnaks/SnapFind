@@ -145,7 +145,7 @@ export default function Home() {
       setPredicting(true)
       const form = new FormData()
       form.append('file', file, file.name)
-      const base = 'https://testing-2-onwh.onrender.com'
+      const base = (import.meta as any).env?.VITE_PREDICTION_API_URL || 'http://localhost:8000'
       const res = await fetch(`${base.replace(/\/$/, '')}/predict/`, {
         method: 'POST',
         body: form,

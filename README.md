@@ -1,296 +1,317 @@
-<div id="top">
-
-<!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<img src="https://github.com/shawnaks/lost-and-found/blob/main/client/LostFound/public/android192_2.png" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
+<img src="client/LostFound/public/android192_2.png" alt="SnapFind logo" width="150" />
 
 # SnapFind
 
-<em></em>
+**Reuniting lost items with their owners, one snapshot at a time.**
 
-<!-- BADGES -->
-<!-- local repository, no metadata badges. -->
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&style=flat-square)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white&style=flat-square)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white&style=flat-square)](https://vite.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth%20%7C%20DB%20%7C%20Storage-3FCF8E?logo=supabase&logoColor=white&style=flat-square)](https://supabase.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white&style=flat-square)](https://fastapi.tiangolo.com/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-ResNet--18-EE4C2C?logo=pytorch&logoColor=white&style=flat-square)](https://pytorch.org/)
 
-<em>Built with the tools and technologies:</em>
-
-<img src="https://img.shields.io/badge/JSON-000000.svg?style=flat-square&logo=JSON&logoColor=white" alt="JSON">
-<img src="https://img.shields.io/badge/Markdown-000000.svg?style=flat-square&logo=Markdown&logoColor=white" alt="Markdown">
-<img src="https://img.shields.io/badge/Stylus-333333.svg?style=flat-square&logo=Stylus&logoColor=white" alt="Stylus">
-<img src="https://img.shields.io/badge/CodeMirror-D30707.svg?style=flat-square&logo=CodeMirror&logoColor=white" alt="CodeMirror">
-<img src="https://img.shields.io/badge/npm-CB3837.svg?style=flat-square&logo=npm&logoColor=white" alt="npm">
-<img src="https://img.shields.io/badge/BSD-AB2B28.svg?style=flat-square&logo=BSD&logoColor=white" alt="BSD">
-<img src="https://img.shields.io/badge/Chai-A30701.svg?style=flat-square&logo=Chai&logoColor=white" alt="Chai">
-<img src="https://img.shields.io/badge/CoffeeScript-2F2625.svg?style=flat-square&logo=CoffeeScript&logoColor=white" alt="CoffeeScript">
-<img src="https://img.shields.io/badge/Bower-EF5734.svg?style=flat-square&logo=Bower&logoColor=white" alt="Bower">
-<img src="https://img.shields.io/badge/PostCSS-DD3A0A.svg?style=flat-square&logo=PostCSS&logoColor=white" alt="PostCSS">
-<img src="https://img.shields.io/badge/Knip-F56E0F.svg?style=flat-square&logo=Knip&logoColor=white" alt="Knip">
-<img src="https://img.shields.io/badge/Mocha-8D6748.svg?style=flat-square&logo=Mocha&logoColor=white" alt="Mocha">
-<img src="https://img.shields.io/badge/Cheerio-E88C1F.svg?style=flat-square&logo=Cheerio&logoColor=white" alt="Cheerio">
-<img src="https://img.shields.io/badge/precommit-FAB040.svg?style=flat-square&logo=pre-commit&logoColor=black" alt="precommit">
-<img src="https://img.shields.io/badge/Grunt-FAA918.svg?style=flat-square&logo=Grunt&logoColor=white" alt="Grunt">
-<img src="https://img.shields.io/badge/Prettier-F7B93E.svg?style=flat-square&logo=Prettier&logoColor=black" alt="Prettier">
-<img src="https://img.shields.io/badge/esbuild-FFCF00.svg?style=flat-square&logo=esbuild&logoColor=black" alt="esbuild">
-<img src="https://img.shields.io/badge/.ENV-ECD53F.svg?style=flat-square&logo=dotenv&logoColor=black" alt=".ENV">
-<img src="https://img.shields.io/badge/JSR-F7DF1E.svg?style=flat-square&logo=JSR&logoColor=black" alt="JSR">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=flat-square&logo=JavaScript&logoColor=black" alt="JavaScript">
-<img src="https://img.shields.io/badge/EJS-B4CA65.svg?style=flat-square&logo=EJS&logoColor=black" alt="EJS">
-<img src="https://img.shields.io/badge/Vitest-6E9F18.svg?style=flat-square&logo=Vitest&logoColor=white" alt="Vitest">
-<img src="https://img.shields.io/badge/Progress-5CE500.svg?style=flat-square&logo=Progress&logoColor=white" alt="Progress">
-<img src="https://img.shields.io/badge/Nodemon-76D04B.svg?style=flat-square&logo=Nodemon&logoColor=white" alt="Nodemon">
-<img src="https://img.shields.io/badge/Supabase-3FCF8E.svg?style=flat-square&logo=Supabase&logoColor=white" alt="Supabase">
-<img src="https://img.shields.io/badge/Cypress-69D3A7.svg?style=flat-square&logo=Cypress&logoColor=white" alt="Cypress">
-<img src="https://img.shields.io/badge/XO-5ED9C7.svg?style=flat-square&logo=XO&logoColor=black" alt="XO">
-<img src="https://img.shields.io/badge/Puppeteer-40B5A4.svg?style=flat-square&logo=Puppeteer&logoColor=white" alt="Puppeteer">
-<img src="https://img.shields.io/badge/Ajv-23C8D2.svg?style=flat-square&logo=Ajv&logoColor=white" alt="Ajv">
-<br>
-<img src="https://img.shields.io/badge/React-61DAFB.svg?style=flat-square&logo=React&logoColor=black" alt="React">
-<img src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style=flat-square&logo=Yarn&logoColor=white" alt="Yarn">
-<img src="https://img.shields.io/badge/Webpack-8DD6F9.svg?style=flat-square&logo=Webpack&logoColor=black" alt="Webpack">
-<img src="https://img.shields.io/badge/Coveralls-3F5767.svg?style=flat-square&logo=Coveralls&logoColor=white" alt="Coveralls">
-<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat-square&logo=Docker&logoColor=white" alt="Docker">
-<img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat-square&logo=Python&logoColor=white" alt="Python">
-<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=flat-square&logo=TypeScript&logoColor=white" alt="TypeScript">
-<img src="https://img.shields.io/badge/tsnode-3178C6.svg?style=flat-square&logo=ts-node&logoColor=white" alt="tsnode">
-<img src="https://img.shields.io/badge/C-A8B9CC.svg?style=flat-square&logo=C&logoColor=black" alt="C">
-<img src="https://img.shields.io/badge/Lodash-3492FF.svg?style=flat-square&logo=Lodash&logoColor=white" alt="Lodash">
-<img src="https://img.shields.io/badge/Less-1D365D.svg?style=flat-square&logo=Less&logoColor=white" alt="Less">
-<img src="https://img.shields.io/badge/Zod-3E67B1.svg?style=flat-square&logo=Zod&logoColor=white" alt="Zod">
-<img src="https://img.shields.io/badge/SemVer-3F4551.svg?style=flat-square&logo=SemVer&logoColor=white" alt="SemVer">
-<img src="https://img.shields.io/badge/VitePress-5C73E7.svg?style=flat-square&logo=VitePress&logoColor=white" alt="VitePress">
-<img src="https://img.shields.io/badge/PHP-777BB4.svg?style=flat-square&logo=PHP&logoColor=white" alt="PHP">
-<img src="https://img.shields.io/badge/Vite-646CFF.svg?style=flat-square&logo=Vite&logoColor=white" alt="Vite">
-<img src="https://img.shields.io/badge/bat-31369E.svg?style=flat-square&logo=bat&logoColor=white" alt="bat">
-<img src="https://img.shields.io/badge/ESLint-4B32C3.svg?style=flat-square&logo=ESLint&logoColor=white" alt="ESLint">
-<img src="https://img.shields.io/badge/OpenAI-412991.svg?style=flat-square&logo=OpenAI&logoColor=white" alt="OpenAI">
-<img src="https://img.shields.io/badge/CSS-663399.svg?style=flat-square&logo=CSS&logoColor=white" alt="CSS">
-<img src="https://img.shields.io/badge/Jasmine-8A4182.svg?style=flat-square&logo=Jasmine&logoColor=white" alt="Jasmine">
-<img src="https://img.shields.io/badge/Sass-CC6699.svg?style=flat-square&logo=Sass&logoColor=white" alt="Sass">
-<img src="https://img.shields.io/badge/Codecov-F01F7A.svg?style=flat-square&logo=Codecov&logoColor=white" alt="Codecov">
-<img src="https://img.shields.io/badge/Jest-C21325.svg?style=flat-square&logo=Jest&logoColor=white" alt="Jest">
-<img src="https://img.shields.io/badge/YAML-CB171E.svg?style=flat-square&logo=YAML&logoColor=white" alt="YAML">
-<img src="https://img.shields.io/badge/CTS-E53236.svg?style=flat-square&logo=CTS&logoColor=white" alt="CTS">
-<img src="https://img.shields.io/badge/React%20Router-CA4245.svg?style=flat-square&logo=React-Router&logoColor=white" alt="React%20Router">
-<img src="https://img.shields.io/badge/gulp-CF4647.svg?style=flat-square&logo=gulp&logoColor=white" alt="gulp">
+[Overview](#overview) · [Features](#features) · [Tech Stack](#tech-stack) · [Project Structure](#project-structure) · [Getting Started](#getting-started) · [Usage](#usage) · [Classification API](#classification-api)
 
 </div>
-<br>
-
----
-
-## Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Overview](#overview)
-- [Features](#features)
-- [Project Structure](#project-structure)
-    - [Project Index](#project-index)
-- [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Usage](#usage)
-    - [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ---
 
 ## Overview
-After seeing a sign in Klaus mentioning a lengthy process for retrieving lost items, we realized that Georgia Tech has a chaotic, decentralized, system of retrieving and reporting lost items. We ourselves have seen clearly lost items in the CULC frequently, but have not reported them due to the lack of clarity on the item reporting process. We came up with SnapFind as a remedy to this issue to hopefully streamline the lost and found process at Georgia Tech.
+
+SnapFind is a community-powered lost-and-found platform built to replace the scattered, hard-to-navigate process of recovering lost belongings on a busy campus.
+
+The project started at **Georgia Tech**, where a sign in the Klaus Advanced Computing Building advertised a lengthy lost-item retrieval process. In practice, lost items were spread across building front desks, group chats, and informal posts, while people who found items had no clear way to report them. SnapFind brings both sides into one searchable place: users post items they have lost or found, attach a photo, and let a convolutional neural network (CNN) tag the item automatically so it is easier for others to discover.
+
+The repository contains both halves of the stack:
+
+- **`client/`** — a React + TypeScript frontend backed by Supabase (auth, database, storage).
+- **`backend/`** — a FastAPI service that runs a ResNet-18 classifier and exposes `POST /predict/` for automatic item categorization.
 
 ---
 
 ## Features
 
-SnapFind is an application that allows users to report lost items, adding the item to a database. This database can then be searched by people who have lost their items, allowing them to track down their item. Under the hood, convolutional neural network (CNN) techniques are used to classify the user images into object types, simplifying the database search for users since the items are tagged with their object type. For example, a picture of a laptop submitted by a user would be tagged as a laptop by the CNN, which can be used as a filter in the database. The model was trained on a large dataset of annotated images.
+### 🔐 Accounts and profiles
+- Email and password registration and login via Supabase Auth.
+- User profiles with username, email, optional phone number, and an avatar.
+- Persistent sessions with the current user cached locally.
+
+### 📸 Photo-first item reporting
+- Dedicated forms for **Post Lost Item** and **Post Found Item**.
+- Images are uploaded to Supabase Storage and served through public or signed URLs.
+
+### 🤖 AI-assisted categorization
+- Uploaded item photos are sent to the local classification backend (`POST /predict/`).
+- The predicted category is stored with the item and used as a search filter.
+- Supported categories: `bag`, `wallet`, `umbrella`, `laptop`, `shoes`, `headphones`, `charger`, `id`, `notebook`, `key`, `phone`, and `earbud`.
+- Manual category selection is available for lost-item reports when no photo is provided.
+
+### 🔎 Unified search across lost and found items
+- Browse lost and found reports together in one feed.
+- Filter by keyword, item type, location, and category.
+- Search by image: upload a photo, let the backend predict its category, and automatically filter the results.
+
+### 📬 Community contact and item lifecycle
+- One-click **Contact** button that opens a pre-filled email to the person who posted the item.
+- Personal dashboard with separate **My Lost Items** and **My Found Items** tabs.
+- Mark items as found or returned so they disappear from the active list.
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Purpose |
+| --- | --- | --- |
+| UI | [React 19](https://react.dev/) | Component-based interface |
+| Language | [TypeScript 5.8](https://www.typescriptlang.org/) | Type-safe application code |
+| Build tool | [Vite 7](https://vite.dev/) | Dev server, HMR, and production builds |
+| Routing | [React Router 7](https://reactrouter.com/) | Client-side page routing |
+| Styling | [Sass / SCSS](https://sass-lang.com/) | Page and component styles |
+| Auth & data | [Supabase](https://supabase.com/) | Authentication, Postgres database, and file storage |
+| Backend | [FastAPI](https://fastapi.tiangolo.com/) + [Uvicorn](https://www.uvicorn.org/) | Classification API |
+| Model | [PyTorch](https://pytorch.org/) ResNet-18 | Image-based item categorization |
+| Animation | [react-type-animation](https://www.npmjs.com/package/react-type-animation) | Landing-page typing effect |
+| Quality | ESLint + TypeScript ESLint | Static analysis and linting |
+
+### Architecture
+
+```text
+┌──────────────────────────────┐
+│   React + TypeScript client  │
+│         (Vite build)         │
+└──────────────┬───────────────┘
+               │
+     ┌─────────┼──────────────────────────────┐
+     │         │                              │
+     ▼         ▼                              ▼
+┌─────────┐ ┌──────────────────┐   ┌──────────────────────────┐
+│Supabase │ │ Supabase Postgres│   │ FastAPI backend          │
+│  Auth   │ │  lost-items      │   │  backend/                │
+│profiles │ │  found-items     │   │  POST /predict/          │
+└─────────┘ └──────────────────┘   │  ResNet-18 → class name  │
+               │                   └──────────────────────────┘
+               ▼
+      ┌──────────────────┐
+      │ Supabase Storage │
+      │  lost-items      │
+      │  found-items     │
+      └──────────────────┘
+```
 
 ---
 
 ## Project Structure
 
-```sh
-└── lost-and-found/
-    └── client
-        └── LostFound
+```text
+SnapFind/
+├── backend/                        # FastAPI image classification API
+│   ├── main.py                     # FastAPI app, model loading, /predict endpoint
+│   ├── model.pth                   # Trained ResNet-18 checkpoint (~43 MB)
+│   ├── modeltester.py              # Training pipeline that produced model.pth
+│   ├── requirements.txt            # Python dependencies
+│   ├── render.yaml                 # Render deployment blueprint
+│   ├── .gitignore
+│   └── README.md
+├── client/
+│   └── LostFound/                  # React + TypeScript frontend
+│       ├── public/                 # App icons and static images
+│       ├── src/
+│       │   ├── components/         # Navbar, TypingText
+│       │   ├── layouts/            # AppLayout
+│       │   ├── lib/                # supabaseClient
+│       │   ├── pages/              # Landing, Login, Register, Home, PostLost, PostFound, Profile
+│       │   └── scss/               # Styles
+│       ├── package.json
+│       └── vite.config.ts
+└── README.md
 ```
+
+### Routes
+
+| Route | Page | Description |
+| --- | --- | --- |
+| `/` | Landing | Public welcome page with login and registration links |
+| `/login` | Login | Email/password sign-in |
+| `/register` | Register | Create an account and profile |
+| `/home` | Home | Search and browse lost and found items |
+| `/post-lost` | Post Lost | Report an item you lost |
+| `/post-found` | Post Found | Report an item you found |
+| `/profile` | Profile | View and manage your own reports |
+
+---
+
 ## Getting Started
 
 ### Prerequisites
 
-This project requires the following dependencies:
+- **Node.js 20.19+** or **22.12+** (required by Vite 7)
+- **npm** (included with Node.js)
+- **Python 3.9+** (for the classification backend)
+- A **Supabase project** with Auth, Postgres, and Storage enabled
 
-- **Programming Language:** JavaScript
-- **Package Manager:** Npm, Bower, Yarn
-- **Container Runtime:** Docker
+### 1. Clone the repository
 
-### Installation
+```bash
+git clone https://github.com/shawnaks/SnapFind.git
+cd SnapFind
+```
 
-Build lost-and-found from the source and intsall dependencies:
+### 2. Run the classification backend
 
-1. **Clone the repository:**
+The backend powers image categorization for the frontend. Start it first so prediction requests succeed.
 
-    ```sh
-    ❯ git clone ../lost-and-found
-    ```
+```bash
+cd backend
 
-2. **Navigate to the project directory:**
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS / Linux
+source .venv/bin/activate
 
-    ```sh
-    ❯ cd lost-and-found
-    ```
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
 
-3. **Install the dependencies:**
+The API is now available at `http://localhost:8000` (interactive docs at `/docs`). See [Classification API](#classification-api) for details.
 
-<!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![docker][docker-shield]][docker-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [docker-shield]: https://img.shields.io/badge/Docker-2CA5E0.svg?style={badge_style}&logo=docker&logoColor=white -->
-	<!-- [docker-link]: https://www.docker.com/ -->
+### 3. Configure the frontend
 
-	**Using [docker](https://www.docker.com/):**
+```bash
+cd client/LostFound
+npm install
+```
 
-	```sh
-	❯ docker build -t GitHub/lost-and-found .
-	```
-<!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![npm][npm-shield]][npm-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [npm-shield]: https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white -->
-	<!-- [npm-link]: https://www.npmjs.com/ -->
+Create a `.env.local` file inside `client/LostFound/`:
 
-	**Using [npm](https://www.npmjs.com/):**
+```env
+VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 
-	```sh
-	❯ npm install
-	```
-<!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![bower][bower-shield]][bower-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [bower-shield]: None -->
-	<!-- [bower-link]: None -->
+# Optional — override the classification backend URL (defaults to http://localhost:8000)
+VITE_PREDICTION_API_URL=http://localhost:8000
+```
 
-	**Using [bower](None):**
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are found in your Supabase project under **Project Settings → API**.
 
-	```sh
-	❯ echo 'INSERT-INSTALL-COMMAND-HERE'
-	```
-<!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![yarn][yarn-shield]][yarn-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [yarn-shield]: https://img.shields.io/badge/Yarn-2C8EBB.svg?style={badge_style}&logo=yarn&logoColor=white -->
-	<!-- [yarn-link]: https://yarnpkg.com/ -->
+Set up Supabase with the required tables, buckets, and policies (see [`client/LostFound/README.md`](client/LostFound/README.md) and the SQL in the section below for a starting schema).
 
-	**Using [yarn](https://yarnpkg.com/):**
+### 4. Start the frontend
 
-	```sh
-	❯ yarn install
-	```
+```bash
+npm run dev
+```
+
+Vite will print a local URL, typically `http://localhost:5173`.
 
 ---
 
-### Usage
+## Usage
 
-Run the project with:
+1. **Create an account** at `/register`.
+2. **Browse items** on `/home` — the feed merges lost and found reports. Filter by keyword, type, and category, or upload a photo and press **Search** to auto-filter by predicted category.
+3. **Report a found item** at `/post-found` — upload a photo; SnapFind predicts its category, uploads the image to Supabase Storage, and saves the report.
+4. **Report a lost item** at `/post-lost` — choose a category manually or let the backend predict it from a photo.
+5. **Manage your reports** at `/profile`, and press **Contact** on any item to email its poster.
 
-**Using [docker](https://www.docker.com/):**
-```sh
-docker run -it {image_name}
-```
-**Using [npm](https://www.npmjs.com/):**
-```sh
-npm start
-```
-**Using [bower](None):**
-```sh
-echo 'INSERT-RUN-COMMAND-HERE'
-```
-**Using [yarn](https://yarnpkg.com/):**
-```sh
-yarn start
+---
+
+## Classification API
+
+The backend exposes a single prediction endpoint used by the frontend:
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `POST` | `/predict/` | Accepts a multipart image (`file`) and returns `{"predicted_class": "<category>"}` |
+| `GET` | `/` | Health check |
+
+```bash
+curl -X POST "http://127.0.0.1:8000/predict/" -F "file=@wallet.jpg"
+# {"predicted_class":"wallet"}
 ```
 
-### Testing
+**Supported categories:** `bag`, `charger`, `earbud`, `headphones`, `id`, `key`, `laptop`, `notebook`, `phone`, `shoes`, `umbrella`, `wallet`.
 
-Lost-and-found uses the {__test_framework__} test framework. Run the test suite with:
+The model is a transfer-learning ResNet-18 (12-way classification, CPU inference) whose weights live in `backend/model.pth`. `backend/modeltester.py` is the training pipeline that produced it. See [`backend/README.md`](backend/README.md) for full backend details and Render deployment.
 
-**Using [npm](https://www.npmjs.com/):**
-```sh
-npm test
-```
-**Using [bower](None):**
-```sh
-echo 'INSERT-TEST-COMMAND-HERE'
-```
-**Using [yarn](https://yarnpkg.com/):**
-```sh
-yarn test
+### Pointing the frontend at a deployed backend
+
+By default the frontend calls `http://localhost:8000`. To use a deployed backend, set:
+
+```env
+VITE_PREDICTION_API_URL=https://your-deployed-api.example.com
 ```
 
 ---
 
+## Supabase schema (starting point)
 
-## Contributing
+```sql
+-- Profiles
+create table public.profiles (
+  id uuid primary key references auth.users (id) on delete cascade,
+  username text,
+  email text,
+  phone text,
+  created_at timestamptz not null default now()
+);
 
-- **💬 [Join the Discussions](https://LOCAL/GitHub/lost-and-found/discussions)**: Share your insights, provide feedback, or ask questions.
-- **🐛 [Report Issues](https://LOCAL/GitHub/lost-and-found/issues)**: Submit bugs found or log feature requests for the `lost-and-found` project.
-- **💡 [Submit Pull Requests](https://LOCAL/GitHub/lost-and-found/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+-- Lost items
+create table public."lost-items" (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  category text,
+  location text,
+  date date,
+  image_url text,
+  user_id uuid references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  resolved boolean not null default false,
+  resolved_at timestamptz
+);
 
-<details closed>
-<summary>Contributing Guidelines</summary>
+-- Found items
+create table public."found-items" (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  category text,
+  location text,
+  date date,
+  image_url text,
+  user_id uuid references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  resolved boolean not null default false,
+  resolved_at timestamptz
+);
 
-1. **Fork the Repository**: Start by forking the project repository to your LOCAL account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
-   ```sh
-   git clone C:\Users\caomi\GitHub\lost-and-found
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to LOCAL**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
-</details>
+alter table public.profiles enable row level security;
+alter table public."lost-items" enable row level security;
+alter table public."found-items" enable row level security;
+```
 
-<details closed>
-<summary>Contributor Graph</summary>
-<br>
-<p align="left">
-   <a href="https://LOCAL{/GitHub/lost-and-found/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=GitHub/lost-and-found">
-   </a>
-</p>
-</details>
+Create two **public storage buckets** named `lost-items` and `found-items`, and add row-level security policies so listings are publicly readable while inserts/updates/deletes are restricted to the owning authenticated user.
 
 ---
 
 ## License
 
-Lost-and-found is protected under the [LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
+No license file is currently included in this repository. Until a license is added, the project is assumed to be all rights reserved by its authors.
 
 ---
 
 ## Acknowledgments
 
-- Credit `contributors`, `inspiration`, `references`, etc.
+- **Georgia Institute of Technology** for the inspiration behind the project.
+- [Supabase](https://supabase.com/), [React](https://react.dev/), [Vite](https://vite.dev/), [React Router](https://reactrouter.com/), and [Sass](https://sass-lang.com/) for the frontend foundation.
+- [FastAPI](https://fastapi.tiangolo.com/) and [PyTorch](https://pytorch.org/) for the classification backend.
 
 <div align="right">
 
-[![][back-to-top]](#top)
+[Back to top](#snapfind)
 
 </div>
-
-
-[back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
-
-
----
